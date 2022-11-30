@@ -19,7 +19,9 @@ def grad_P(P,x):
   return np.array((dpx,dpy,dpz))
 
 @njit
-def pressure_support(gradP,direction):
+def pressure_support(gradP,x,sink_pos):
+  r=x-sink_pos
+  direction=r/np.linalg.norm(r)
   return np.dot(gradP,direction)
 
 @njit
@@ -37,11 +39,14 @@ def to_basis(a,basis):
 @njit
 def rotational_support(v,x,sink_pos):
   r=x-sink_pos
-  v_rad=to_basis(v,make_basis(r))
-  return 
+  v_tan=to_basis(v,make_basis(r))
+  v_tan[0]*=0.0
+  omega=np.linalg.norm(v_tan)/(2.0*np.pi*np.linalg.norm(r))
+  return omega*omega*np.linalg.norm(r)
 
-def is_keplerian():
-  return 0
+@njit
+def rotational_fraction(gradP,v,x,sink_pos):
+  return rotational_support(v,x,sink_pos)/pressure_support(gradP,x,sink_pos)
 
 def get_disc():
   return 0
