@@ -38,12 +38,14 @@ def amr_fix(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
     for j in range(ny):
       for k in range(nz):
         if simpleMap[i,j,k]>=0:
-          iMap=simpleMap[i,j,k]
-          if amrLevels[iMap]==levelMax:
-            simpleMap[i+1,j,k]=iMap;
-            simpleMap[i,j+1,k]=iMap;
-            simpleMap[i,j,k+1]=iMap;
-            simpleMap[i+1,j+1,k]=iMap;
-            simpleMap[i,j+1,k+1]=iMap;
-            simpleMap[i+1,j,k+1]=iMap;
-            simpleMap[i+1,j+1,k+1]=iMap;
+          iMap=simpleMap[i,j,k];
+          n=levelMax-amrLevels[iMap];
+          nMinus=np.int8(np.floor(n/2));
+          nPlus=np.int8(np.ceil(n/2));
+          simpleMap[i-nMinus:i+nPlus,j-nMinus:j+nPlus,k-nMinus:k+nPlus]=iMap;
+          
+@njit
+def make_mapping(positionArray:np.ndarray,amrLevels:np.ndarray,positionDataCube:np.ndarray)->np.ndarray:
+  mapping=make_simple_mapping(positionArray,positionDataCube);
+  amr_fix(mapping);
+  return mapping;
