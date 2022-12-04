@@ -31,7 +31,7 @@ def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->n
   return mapping;
 
 @njit
-def amr_fix(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
+def amr_fix_upres(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
   (nx,ny,nz)=simpleMap.shape;
   levelMax=np.maximum(amrLevels);
   for i in range(nx):
@@ -45,7 +45,10 @@ def amr_fix(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
           simpleMap[i-nMinus:i+nPlus,j-nMinus:j+nPlus,k-nMinus:k+nPlus]=iMap;
           
 @njit
-def make_mapping(positionArray:np.ndarray,amrLevels:np.ndarray,positionDataCube:np.ndarray)->np.ndarray:
+def make_mapping(positionArray:np.ndarray,amrLevels:np.ndarray,positionDataCube:np.ndarray,amrMapMethod:str="upres")->np.ndarray:
   mapping=make_simple_mapping(positionArray,positionDataCube);
-  amr_fix(mapping);
+  if amrMapMethod=="upres":
+    amr_fix_upres(mapping);
+  else:
+    raise(UserWarning("if you have any level jumps, using no amrMapMethod will lead to broken mappings"));
   return mapping;
