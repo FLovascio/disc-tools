@@ -34,8 +34,8 @@ def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->n
 @njit(parallel=True)
 def amr_fix_upres(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
   (nx,ny,nz)=simpleMap.shape;
-  levelMax=np.maximum(amrLevels);
-  for i in prange(nx):
+  levelMax=np.max(amrLevels);
+  for i in range(nx):
     for j in range(ny):
       for k in range(nz):
         if simpleMap[i,j,k]>=0:
