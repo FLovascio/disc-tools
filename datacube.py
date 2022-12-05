@@ -49,7 +49,7 @@ def amr_fix_upres(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
 def make_mapping(positionArray:np.ndarray,amrLevels:np.ndarray,positionDataCube:np.ndarray,amrMapMethod:str="upres")->np.ndarray:
   mapping=make_simple_mapping(positionArray,positionDataCube);
   if amrMapMethod=="upres":
-    amr_fix_upres(mapping);
+    amr_fix_upres(mapping,amrLevels);
   else:
     raise(UserWarning("if you have any level jumps, using no amrMapMethod will lead to broken mappings"));
   return mapping;
