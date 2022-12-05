@@ -1,10 +1,11 @@
 import numpy as np
 from numba import njit,prange
 
-@njit
-def make_cube(d:tuple[float,float,float],n:tuple[int,float,float],start:tuple[float,float,float])->np.ndarray:
-  nx,ny,nz=n;
+@njit(parallel=True)
+def make_cube(d:tuple[float,float,float],l:tuple[float,float,float],start:tuple[float,float,float])->np.ndarray:
+  lx,ly,lz=l;
   dx,dy,dz=d;
+  nx,ny,nz=(lx/dx,ly/dy,lz/dz);
   ret=np.zeros((nx,ny,nz,3));
   for i in prange(nx):
     for j in prange(ny):
@@ -14,7 +15,7 @@ def make_cube(d:tuple[float,float,float],n:tuple[int,float,float],start:tuple[fl
         ret[i,j,k,2]=k*dz;
   return ret;
 
-@njit
+@njit(parallel=True)
 def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->np.ndarray:
   dx=positionDataCube[1,0,0,0];
   dy=positionDataCube[0,1,0,1];
@@ -30,11 +31,11 @@ def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->n
     mapping[iData,jData,kData]=i;
   return mapping;
 
-@njit
+@njit(parallel=True)
 def amr_fix_upres(simpleMap:np.ndarray,amrLevels:np.ndarray)->None:
   (nx,ny,nz)=simpleMap.shape;
   levelMax=np.maximum(amrLevels);
-  for i in range(nx):
+  for i in prange(nx):
     for j in range(ny):
       for k in range(nz):
         if simpleMap[i,j,k]>=0:
