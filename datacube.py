@@ -5,7 +5,7 @@ from numba import njit,prange
 def make_cube(d:tuple[float,float,float],l:tuple[float,float,float],start:tuple[float,float,float])->np.ndarray:
   lx,ly,lz=l;
   dx,dy,dz=d;
-  nx,ny,nz=(lx/dx,ly/dy,lz/dz);
+  nx,ny,nz=(int(np.floor(lx/dx)),int(np.floor(ly/dy)),int(np.floor(lz/dz)));
   ret=np.zeros((nx,ny,nz,3));
   for i in prange(nx):
     for j in prange(ny):
