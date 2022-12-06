@@ -1,22 +1,29 @@
 import osyris
 import numpy as np
-from numba import njit, stencil
+from numba import njit, prange, stencil
+
 
 @stencil
-def grad_P(P,x):
+def grad_P_x(P,x):
   hix=x[1,0,0]-x[0,0,0]
   hmx=x[0,0,0]-x[-1,0,0]
   hfx=hix/hmx
   dpx=P[1,0,0]-((hfx)**2)*P[-1,0,0]-(1.0-(hfx)**2)*P[0,0,0]
+  return dpx
+@stencil
+def grad_P_y(P,x):
   hiy=x[0,1,0]-x[0,0,0]
   hmy=x[0,0,0]-x[0,-1,0]
   hfy=hiy/hmy
-  dpy=P[0,1,0]-((hfx)**2)*P[0,-1,0]-(1.0-(hfy)**2)*P[0,0,0]
+  dpy=P[0,1,0]-((hfy)**2)*P[0,-1,0]-(1.0-(hfy)**2)*P[0,0,0]
+  return dpy
+@stencil
+def grad_P_z(P,x):
   hiz=x[0,0,1]-x[0,0,0]
   hmz=x[0,0,0]-x[0,0,-1]
   hfz=hiz/hmz
-  dpz=P[0,0,1]-((hfx)**2)*P[0,0,-1]-(1.0-(hfz)**2)*P[0,0,0]
-  return np.array((dpx,dpy,dpz))
+  dpz=P[0,0,1]-((hfz)**2)*P[0,0,-1]-(1.0-(hfz)**2)*P[0,0,0]
+  return dpz
 
 @njit
 def pressure_support(gradP,x,sink_pos):
@@ -51,13 +58,17 @@ def rotational_fraction(gradP,v,x,sink_pos):
 def get_disc():
   return 0
 
-@njit
+@njit(parallel=True)
 def angular_momentum(v,rho,V,x):
-  return rho*V*np.cross(x,v)
+  nx,ny,nz=rho.shape
+  angMom=np.zeros_like(v)
+  for i in prange(nx):
+    for j in range(ny):
+      for k in range(nz):
+        angMom[i,j,k,:]=rho[i,j,k]*V*np.cross(x[i,j,k,:],v[i,j,k,:])
+  return angMom
 
 @njit
 def angular_momentum_sphere(v,rho,V,x):
-  total_angular_momentum=np.array((0,0,0))
-  for vi,rhoi,Vi,xi in zip(v,rho,V,x):
-    total_angular_momentum+=angular_momentum(vi,rhoi,Vi,xi)
-  return total_angular_momentum
+  total_angular_momentum=angular_momentum(v,rho,V,x)
+  return np.sum(np.sum(np.sum(total_angular_momentum,axis=0),axis=0),axis=0)
