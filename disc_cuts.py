@@ -1,6 +1,6 @@
 import numpy as np
-from typing import Callable
 from numba import njit,prange
+from typing import Callable
 
 @njit
 def make_nan_array(template:np.ndarray)->np.ndarray:
@@ -37,13 +37,13 @@ def has_nan_neighbor(stencil:np.ndarray)->bool:
 
 @njit
 def get_cut_surface(cutArray:np.ndarray)->np.ndarray:
-  nx,ny,nz= cutArray.shape;
+  nx,ny,nz=cutArray.shape;
   surface=np.full((nx,ny,nz),False);
   for i in prange(nx):
     for j in range(ny):
       for k in range(nz):
         if(in_domain(i,j,k)):
-          surface[i,j,k]=has_nan_neighbor(surface[i-1:i+1,j-1:j+1,k-1:k+1]);
+          surface[i,j,k]=has_nan_neighbor(cutArray[i-1:i+1,j-1:j+1,k-1:k+1]);
   return surface;
 
 def get_surface(toCut:np.ndarray,conditionFunction:Callable[[np.ndarray],np.ndarray],conditionArg:np.ndarray)->np.ndarray:
