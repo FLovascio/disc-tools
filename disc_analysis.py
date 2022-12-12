@@ -4,21 +4,21 @@ from numba import njit, prange, stencil
 
 
 @stencil
-def grad_P_x(P,x):
+def grad_P_x(P:np.float64,x:np.ndarray)->np.float64:
   hix=x[1,0,0]-x[0,0,0]
   hmx=x[0,0,0]-x[-1,0,0]
   hfx=hix/hmx
   dpx=P[1,0,0]-((hfx)**2)*P[-1,0,0]-(1.0-(hfx)**2)*P[0,0,0]
   return dpx
 @stencil
-def grad_P_y(P,x):
+def grad_P_y(P:np.float64,x:np.ndarray)->np.float64:
   hiy=x[0,1,0]-x[0,0,0]
   hmy=x[0,0,0]-x[0,-1,0]
   hfy=hiy/hmy
   dpy=P[0,1,0]-((hfy)**2)*P[0,-1,0]-(1.0-(hfy)**2)*P[0,0,0]
   return dpy
 @stencil
-def grad_P_z(P,x):
+def grad_P_z(P:np.float64,x:np.ndarray)->np.float64:
   hiz=x[0,0,1]-x[0,0,0]
   hmz=x[0,0,0]-x[0,0,-1]
   hfz=hiz/hmz
