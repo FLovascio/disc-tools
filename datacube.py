@@ -4,8 +4,6 @@ import osyris
 
 @njit(parallel=True)
 def make_cube(d:tuple[float,float,float],l:tuple[float,float,float],start:tuple[float,float,float])->np.ndarray:
-  #print(l)
-  #print(d)
   lx,ly,lz=l;
   dx,dy,dz=d;
   nx,ny,nz=(int(np.floor(lx/dx)),int(np.floor(ly/dy)),int(np.floor(lz/dz)));
@@ -28,10 +26,10 @@ def osyris_make_cube(data:osyris.Dataset)->np.ndarray:
   l:tuple[float,float,float]=(np.max(data["amr"]["position"].x.values)-np.min(data["amr"]["position"].x.values),np.max(data["amr"]["position"].y.values)-np.min(data["amr"]["position"].y.values),np.max(data["amr"]["position"].z.values)-np.min(data["amr"]["position"].z.values));
   dx=np.min(data["amr"]["dx"]);
   d:tuple[float,float,float]=(dx,dx,dx);
-  startx=data["amr"]["position"][startInd[0]]-(2**(startDeltaLevel[0])-1)*dx
-  starty=data["amr"]["position"][startInd[1]]-(2**(startDeltaLevel[1])-1)*dx
-  startz=data["amr"]["position"][startInd[2]]-(2**(startDeltaLevel[2])-1)*dx
-  start:tuple[float,float,float]=(startx,starty,startz)
+  startx=data["amr"]["position"][startInd[0]]-(2**(startDeltaLevel[0])-1)*dx;
+  starty=data["amr"]["position"][startInd[1]]-(2**(startDeltaLevel[1])-1)*dx;
+  startz=data["amr"]["position"][startInd[2]]-(2**(startDeltaLevel[2])-1)*dx;
+  start:tuple[float,float,float]=(startx,starty,startz);
   return make_cube(d,l,start);
 
 @njit(parallel=True)
