@@ -6,3 +6,7 @@ pub struct triangle<T>{
   point2:vector<T>
   point3:vector<T>
 }
+
+pub fn normal<T>(A:triangle<T>)->vector<T>{
+  
+}
