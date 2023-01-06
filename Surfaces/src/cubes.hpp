@@ -15,3 +15,11 @@ class neighbourCube{
     return nodes[(i_+1)+3*(j_+1)+9*(k_+1)];
   }
 };
+
+template <typename T>
+class vertexList{
+  private:
+    std::array<triangleVertices,28> triangles;
+  public:
+    
+};
