@@ -35,20 +35,27 @@ class scalarCube<bool>{
   template<typename T>
   scalarCube(scalarCube<T>vertexData_, T isolevel){
     vertices=0;
-    if(vertexData_[0]<isolevel){vertices|=1};
-    if(vertexData_[1]<isolevel){vertices|=2};
-    if(vertexData_[2]<isolevel){vertices|=4};
-    if(vertexData_[3]<isolevel){vertices|=8};
-    if(vertexData_[4]<isolevel){vertices|=16};
-    if(vertexData_[5]<isolevel){vertices|=32};
-    if(vertexData_[6]<isolevel){vertices|=64};
-    if(vertexData_[7]<isolevel){vertices|=128};
+    if(vertexData_[0]<isolevel){vertices|=1;}
+    if(vertexData_[1]<isolevel){vertices|=2;}
+    if(vertexData_[2]<isolevel){vertices|=4;}
+    if(vertexData_[3]<isolevel){vertices|=8;}
+    if(vertexData_[4]<isolevel){vertices|=16;}
+    if(vertexData_[5]<isolevel){vertices|=32;}
+    if(vertexData_[6]<isolevel){vertices|=64;}
+    if(vertexData_[7]<isolevel){vertices|=128;}
   }
 };
 
-class cube{
-  private:
-    scalarCube<double> data;
-    vectorCube<double> position;
-
+template<class T>
+struct dataCube{
+  std::array<T,8> vertexData;
 };
+template<>
+struct dataCube<double>{
+  scalarCube<double> vertexData;
+};
+template<>
+struct dataCube<linalg3D::vector<double>>{
+  vectorCube<double> vertexData;
+};
+
