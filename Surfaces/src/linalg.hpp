@@ -38,6 +38,12 @@ auto direction(vector<T> a)->vector<T>{
   T vNorm=norm(a);
   return vector<T>{a.e1/vNorm,a.e2/vNorm,a.e3/vNorm};
 }
+
+template<typename T>
+struct dataPoint{
+  vector<T> position;
+  T data;
+};
 };
 namespace vutils
 {

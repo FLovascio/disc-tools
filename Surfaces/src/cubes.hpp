@@ -14,6 +14,9 @@ class vectorCube{
   auto operator()(int i_, int j_, int k_)->linalg3D::vector<T>&{
     return vertices[i_+2*j_+2*k_];
   }
+  auto operator[](unsigned int i_)->const linalg3D::vector<T>{
+    return vertices[i_];
+  }
 };
 
 template <typename T>
@@ -25,12 +28,15 @@ class scalarCube{
   auto operator()(int i_, int j_, int k_)->linalg3D::vector<T>&{
     return vertices[i_+2*j_+2*k_];
   }
+  auto operator[](unsigned int i_)->const T{
+    return vertices[i_];
+  }
 };
 
 template<>
 class scalarCube<bool>{
   private:
-    unsigned char vertices;
+    int vertices;
   public:
   template<typename T>
   scalarCube(scalarCube<T>vertexData_, T isolevel){
@@ -43,6 +49,9 @@ class scalarCube<bool>{
     if(vertexData_[5]<isolevel){vertices|=32;}
     if(vertexData_[6]<isolevel){vertices|=64;}
     if(vertexData_[7]<isolevel){vertices|=128;}
+  }
+  auto get_value()->int{
+    return this->vertices;
   }
 };
 

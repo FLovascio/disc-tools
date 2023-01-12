@@ -3,8 +3,7 @@
 #include "linalg.hpp"
 #include <array>
 
-const int edgeTable[256]=
-{
+const int edgeTable[256]= {
 0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
 0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
 0x190, 0x99 , 0x393, 0x29a, 0x596, 0x49f, 0x795, 0x69c,
@@ -295,14 +294,18 @@ const int triTable[256][16] = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 {0, 3, 8, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
 
-/*auto build_triangles()->void{
-for (i=0;triTable[cubeIndex][i]!=-1;i+=3) {
-      triangles[ntriang].p[0] = vertlist[triTable[cubeIndex][i  ]];
-      triangles[ntriang].p[1] = vertlist[triTable[cubeIndex][i+1]];
-      triangles[ntriang].p[2] = vertlist[triTable[cubeIndex][i+2]];
-      ntriang++;
-}}
-*/
+template<class T>
+auto VertexInterp(T isoLevel_,linalg3D::vector<T> p1_,linalg3D::vector<T> p2_,T valp1_,T valp2_)->linalg3D::vector<T>{
+    T mu;
+    if (abs(isoLevel_ - valp1_) < 0.00001)
+      return (p1_);
+    if (abs(isoLevel_ - valp2_) < 0.00001)
+      return (p2_);
+    if (abs(valp1_- valp2_) < 0.00001)
+      return (p1_);
+    mu = (isoLevel_ - valp1_) / (valp2_ - valp1_);
+    return linalg3D::vector<T>{p1_.e1 + mu * (p2_.e1 - p1_.e1),p1_.e2 + mu * (p2_.e2 - p1_.e2),p1_.e3 + mu * (p2_.e3 - p1_.e3)};
+}
 template <class T> class marchingCube {
 private:
   dataCube<T> data;
@@ -310,64 +313,59 @@ private:
   std::array<double, 12> vertList;
   scalarCube<bool> cubeIndex;
   T isoLevel;
+  bool atSurface;
 public: 
   marchingCube(const vectorCube<double> &position_,
                            const dataCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
                             cubeIndex=scalarCube<bool>(data,isoLevel);
                            };
-  auto vertex_interpolate(T isoLevel) {
-    if (edgeTable[cubeIndex] == 0)
-      return (0);
-
-    /* Find the vertices where the surface intersects the cube */
-    if (edgeTable[cubeIndex] & 1)
-      vertlist[0] = VertexInterp(isolevel, grid.p[0], grid.p[1], grid.val[0],
-                                 grid.val[1]);
-    if (edgeTable[cubeIndex] & 2)
-      vertlist[1] = VertexInterp(isolevel, grid.p[1], grid.p[2], grid.val[1],
-                                 grid.val[2]);
-    if (edgeTable[cubeIndex] & 4)
-      vertlist[2] = VertexInterp(isolevel, grid.p[2], grid.p[3], grid.val[2],
-                                 grid.val[3]);
-    if (edgeTable[cubeIndex] & 8)
-      vertlist[3] = VertexInterp(isolevel, grid.p[3], grid.p[0], grid.val[3],
-                                 grid.val[0]);
-    if (edgeTable[cubeIndex] & 16)
-      vertlist[4] = VertexInterp(isolevel, grid.p[4], grid.p[5], grid.val[4],
-                                 grid.val[5]);
-    if (edgeTable[cubeIndex] & 32)
-      vertlist[5] = VertexInterp(isolevel, grid.p[5], grid.p[6], grid.val[5],
-                                 grid.val[6]);
-    if (edgeTable[cubeIndex] & 64)
-      vertlist[6] = VertexInterp(isolevel, grid.p[6], grid.p[7], grid.val[6],
-                                 grid.val[7]);
-    if (edgeTable[cubeIndex] & 128)
-      vertlist[7] = VertexInterp(isolevel, grid.p[7], grid.p[4], grid.val[7],
-                                 grid.val[4]);
-    if (edgeTable[cubeIndex] & 256)
-      vertlist[8] = VertexInterp(isolevel, grid.p[0], grid.p[4], grid.val[0],
-                                 grid.val[4]);
-    if (edgeTable[cubeIndex] & 512)
-      vertlist[9] = VertexInterp(isolevel, grid.p[1], grid.p[5], grid.val[1],
-                                 grid.val[5]);
-    if (edgeTable[cubeIndex] & 1024)
-      vertlist[10] = VertexInterp(isolevel, grid.p[2], grid.p[6], grid.val[2],
-                                  grid.val[6]);
-    if (edgeTable[cubeIndex] & 2048)
-      vertlist[11] = VertexInterp(isolevel, grid.p[3], grid.p[7], grid.val[3],
-                                  grid.val[7]);
-    double mu;
-    linalg3D::vector<double> p;
-    if (abs(isolevel - valp1) < 0.00001)
-      return (p1);
-    if (abs(isolevel - valp2) < 0.00001)
-      return (p2);
-    if (abs(valp1 - valp2) < 0.00001)
-      return (p1);
-    mu = (isolevel - valp1) / (valp2 - valp1);
-    p.x = p1.x + mu * (p2.x - p1.x);
-    p.y = p1.y + mu * (p2.y - p1.y);
-    p.z = p1.z + mu * (p2.z - p1.z);
-    return (p);
+  auto vertex_interpolate()->void {
+    atSurface=true;
+    if (edgeTable[cubeIndex.get_value()] == 0)
+      atSurface=false;
+      return; //don't bother doing stuff after: surface does not intersect the cube
+    // Find the vertices where the surface intersects the cube
+    if (edgeTable[cubeIndex.get_value()] & 1)
+      vertList[0] = VertexInterp(isoLevel, position[0], position[1], data[0],
+                                 data[1]);
+    if (edgeTable[cubeIndex.get_value()] & 2)
+      vertList[1] = VertexInterp(isoLevel, position[1], position[2], data[1],
+                                 data[2]);
+    if (edgeTable[cubeIndex.get_value()] & 4)
+      vertList[2] = VertexInterp(isoLevel, position[2], position[3], data[2],
+                                 data[3]);
+    if (edgeTable[cubeIndex.get_value()] & 8)
+      vertList[3] = VertexInterp(isoLevel, position[3], position[0], data[3],
+                                 data[0]);
+    if (edgeTable[cubeIndex.get_value()] & 16)
+      vertList[4] = VertexInterp(isoLevel, position[4], position[5], data[4],
+                                 data[5]);
+    if (edgeTable[cubeIndex.get_value()] & 32)
+      vertList[5] = VertexInterp(isoLevel, position[5], position[6], data[5],
+                                 data[6]);
+    if (edgeTable[cubeIndex.get_value()] & 64)
+      vertList[6] = VertexInterp(isoLevel, position[6], position[7], data[6],
+                                 data[7]);
+    if (edgeTable[cubeIndex.get_value()] & 128)
+      vertList[7] = VertexInterp(isoLevel, position[7], position[4], data[7],
+                                 data[4]);
+    if (edgeTable[cubeIndex.get_value()] & 256)
+      vertList[8] = VertexInterp(isoLevel, position[0], position[4], data[0],
+                                 data[4]);
+    if (edgeTable[cubeIndex.get_value()] & 512)
+      vertList[9] = VertexInterp(isoLevel, position[1], position[5], data[1],
+                                 data[5]);
+    if (edgeTable[cubeIndex.get_value()] & 1024)
+      vertList[10] = VertexInterp(isoLevel, position[2], position[6], data[2],
+                                  data[6]);
+    if (edgeTable[cubeIndex.get_value()] & 2048)
+      vertList[11] = VertexInterp(isoLevel, position[3], position[7], data[3],
+                                  data[7]);
+  }
+  auto build_triangles(std::vector<triangleVertices<T>>&triangles)->void{
+    for (int i=0;triTable[cubeIndex.get_value()][i]!=-1;i+=3) {
+      triangles.push_back(triangleVertices<T>{vertList[triTable[cubeIndex.get_value()][i]],vertList[triTable[cubeIndex.get_value()][i+1]],vertList[triTable[cubeIndex.get_value()][i+2]]});
+    }
   }
 };
+
