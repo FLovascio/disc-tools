@@ -315,11 +315,14 @@ private:
   T isoLevel;
   bool atSurface;
 public: 
-  marchingCube(const vectorCube<double> &position_,
-                           const scalarCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
-                            cubeIndex=scalarCube<bool>(data,isoLevel);
-                           };
-  marchingCube(const dataCube<double> &dataCube_, T isoLevel_):isoLevel(isoLevel_),data(dataCube_.data()),position(dataCube_.position()){;}
+  marchingCube(const vectorCube<double> &position_,const scalarCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
+    cubeIndex=scalarCube<bool>(data,isoLevel);
+    vertex_interpolate();
+  };
+  marchingCube(const dataCube<double> &dataCube_, T isoLevel_):isoLevel(isoLevel_),data(dataCube_.data()),position(dataCube_.position()){
+    cubeIndex=scalarCube<bool>(data,isoLevel);
+    vertex_interpolate();
+  };
   auto vertex_interpolate()->void {
     atSurface=true;
     if (edgeTable[cubeIndex.get_value()] == 0)
