@@ -306,19 +306,20 @@ auto VertexInterp(T isoLevel_,linalg3D::vector<T> p1_,linalg3D::vector<T> p2_,T 
     mu = (isoLevel_ - valp1_) / (valp2_ - valp1_);
     return linalg3D::vector<T>{p1_.e1 + mu * (p2_.e1 - p1_.e1),p1_.e2 + mu * (p2_.e2 - p1_.e2),p1_.e3 + mu * (p2_.e3 - p1_.e3)};
 }
-template <class T> class marchingCube {
+template <typename T> class marchingCube {
 private:
-  dataCube<T> data;
-  vectorCube<double> position;
+  scalarCube<T> data;
+  vectorCube<T> position;
   std::array<double, 12> vertList;
   scalarCube<bool> cubeIndex;
   T isoLevel;
   bool atSurface;
 public: 
   marchingCube(const vectorCube<double> &position_,
-                           const dataCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
+                           const scalarCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
                             cubeIndex=scalarCube<bool>(data,isoLevel);
                            };
+  marchingCube(const dataCube<double> &dataCube_, T isoLevel_):isoLevel(isoLevel_),data(dataCube_.data()),position(dataCube_.position()){;}
   auto vertex_interpolate()->void {
     atSurface=true;
     if (edgeTable[cubeIndex.get_value()] == 0)

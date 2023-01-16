@@ -55,16 +55,27 @@ class scalarCube<bool>{
   }
 };
 
-template<class T>
+template<typename T>
 struct dataCube{
-  std::array<T,8> vertexData;
+  std::array<linalg3D::dataPoint<T>,8> vertexData;
+  inline auto data()const->scalarCube<T>{
+    return scalarCube<T>{std::array<T,8>{vertexData[0].data,
+                                 vertexData[1].data,
+                                 vertexData[2].data,
+                                 vertexData[3].data,
+                                 vertexData[4].data,
+                                 vertexData[5].data,
+                                 vertexData[6].data,
+                                 vertexData[7].data}};
+  };
+  inline auto position()const->vectorCube<T>{
+    return vectorCube<T>{std::array<T,8>{vertexData[0].position,
+                                 vertexData[1].position,
+                                 vertexData[2].position,
+                                 vertexData[3].position,
+                                 vertexData[4].position,
+                                 vertexData[5].position,
+                                 vertexData[6].position,
+                                 vertexData[7].position}};
+  };
 };
-template<>
-struct dataCube<double>{
-  scalarCube<double> vertexData;
-};
-template<>
-struct dataCube<linalg3D::vector<double>>{
-  vectorCube<double> vertexData;
-};
-
