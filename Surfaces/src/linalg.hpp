@@ -44,6 +44,18 @@ struct dataPoint{
   vector<T> position;
   T data;
 };
+
+template <typename T>
+struct vectors{
+  std::vector<vector<T>> vectorsStored;
+  vectors(unsigned int reserveLength_=0){
+    vectorsStored.reserve(reserveLength_);
+  };  
+  auto push_back(vector<T> vec_)->void{
+    vectorsStored.push_back(vec_);
+  };
+};
+
 };
 namespace vutils
 {

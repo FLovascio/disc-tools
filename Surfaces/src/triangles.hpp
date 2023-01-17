@@ -54,3 +54,26 @@ class triangle{
     return ::normal<T>(tSides);
   }
 };
+
+
+template <typename T>
+struct triangles{
+  std::vector<triangleVertices<T>> trianglesStored;
+  triangles(unsigned int reserveLength_=0){
+    trianglesStored.reserve(reserveLength_);
+  };
+  auto get_len()->unsigned int{
+    return trianglesStored.size();
+  };
+  auto push_back(triangleVertices<T> triangle_)->void{
+    trianglesStored.push_back(triangle_);
+  };
+  auto normal()->linalg3D::vectors<T>{
+    linalg3D::vectors<T> ret=linalg3D::vectors<T>(this->get_len());
+    for(const auto &item:trianglesStored){
+      ret.push_back(normal(item));
+    }
+    return ret;
+  };
+};
+
