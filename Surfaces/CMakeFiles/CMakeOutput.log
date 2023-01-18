@@ -264,3 +264,29 @@ Parsed CXX implicit link information from above output:
   implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/System/Library/Frameworks]
 
 
+Performing C++ SOURCE FILE Test HAS_FLTO succeeded with the following output:
+Change Dir: /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_7b223/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7b223.dir/build.make CMakeFiles/cmTC_7b223.dir/build
+Building CXX object CMakeFiles/cmTC_7b223.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++ -DHAS_FLTO  -O3 -g  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk   -flto -std=gnu++20 -MD -MT CMakeFiles/cmTC_7b223.dir/src.cxx.o -MF CMakeFiles/cmTC_7b223.dir/src.cxx.o.d -o CMakeFiles/cmTC_7b223.dir/src.cxx.o -c /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_7b223
+/opt/homebrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b223.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++ -O3 -g  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_7b223.dir/src.cxx.o -o cmTC_7b223  -flto 
+
+
+Source file was:
+int main() { return 0; }
+Performing C++ SOURCE FILE Test HAS_FLTO_THIN succeeded with the following output:
+Change Dir: /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make -f Makefile cmTC_c680f/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_c680f.dir/build.make CMakeFiles/cmTC_c680f.dir/build
+Building CXX object CMakeFiles/cmTC_c680f.dir/src.cxx.o
+/Library/Developer/CommandLineTools/usr/bin/c++ -DHAS_FLTO_THIN  -O3 -g  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk   -flto=thin -std=gnu++20 -MD -MT CMakeFiles/cmTC_c680f.dir/src.cxx.o -MF CMakeFiles/cmTC_c680f.dir/src.cxx.o.d -o CMakeFiles/cmTC_c680f.dir/src.cxx.o -c /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_c680f
+/opt/homebrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c680f.dir/link.txt --verbose=1
+/Library/Developer/CommandLineTools/usr/bin/c++ -O3 -g  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_c680f.dir/src.cxx.o -o cmTC_c680f  -flto=thin 
+
+
+Source file was:
+int main() { return 0; }

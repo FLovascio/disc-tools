@@ -140,6 +140,44 @@ tests/fast:
 	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/build
 .PHONY : tests/fast
 
+# Convenience name for target.
+src/CMakeFiles/surfaces.dir/rule:
+	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/surfaces.dir/rule
+.PHONY : src/CMakeFiles/surfaces.dir/rule
+
+# Convenience name for target.
+surfaces: src/CMakeFiles/surfaces.dir/rule
+.PHONY : surfaces
+
+# fast build rule for target.
+surfaces/fast:
+	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/build
+.PHONY : surfaces/fast
+
+tesselate.o: tesselate.cpp.o
+.PHONY : tesselate.o
+
+# target to build an object file
+tesselate.cpp.o:
+	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/tesselate.cpp.o
+.PHONY : tesselate.cpp.o
+
+tesselate.i: tesselate.cpp.i
+.PHONY : tesselate.i
+
+# target to preprocess a source file
+tesselate.cpp.i:
+	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/tesselate.cpp.i
+.PHONY : tesselate.cpp.i
+
+tesselate.s: tesselate.cpp.s
+.PHONY : tesselate.s
+
+# target to generate assembly for a file
+tesselate.cpp.s:
+	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/tesselate.cpp.s
+.PHONY : tesselate.cpp.s
+
 tests.o: tests.cpp.o
 .PHONY : tests.o
 
@@ -173,7 +211,11 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... surfaces"
 	@echo "... tests"
+	@echo "... tesselate.o"
+	@echo "... tesselate.i"
+	@echo "... tesselate.s"
 	@echo "... tests.o"
 	@echo "... tests.i"
 	@echo "... tests.s"

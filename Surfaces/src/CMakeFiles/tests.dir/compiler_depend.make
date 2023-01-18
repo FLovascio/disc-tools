@@ -238,8 +238,11 @@ src/CMakeFiles/tests.dir/tests.cpp.o: src/tests.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/math.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__split_buffer \
-  src/triangles.hpp
+  src/triangles.hpp \
+  src/utils.hpp
 
+
+src/utils.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__split_buffer:
 

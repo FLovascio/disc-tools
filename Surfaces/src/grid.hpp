@@ -2,10 +2,12 @@
 
 #include <vector>
 #include <array>
+#include <functional>
 #include "cubes.hpp"
 #include "linalg.hpp"
 #include "triangles.hpp"
 #include "marching_cubes.hpp"
+
 
 template <typename T>
 struct grid{
@@ -39,9 +41,18 @@ struct grid{
   auto find_triangles(unsigned int i_,T isoLevel_,triangles<T> &triangStore_)const->void{
     construct_marching_cube(i_,isoLevel_).build_triangles(triangStore_);
   }
+  auto tesselate(T isoLevel_, triangles<T> &triangStore_)const->void{
+    for(unsigned int k=0;k<nz-1;++k){
+      for(unsigned int j=0;j<ny-1;++j){
+        for(unsigned int i=0;i<nx-1;++i){
+          find_triangles(i,j,k,isoLevel_,triangStore_);
+        };
+      };
+    };
+  }
 };
 
 template<typename T>
 auto get_all_triangles(const grid<T>& data_,T isoLevel_,triangles<T> & outputTriangles_)->void{
-
+  data_.tesselate(isoLevel_,outputTriangles_);
 }

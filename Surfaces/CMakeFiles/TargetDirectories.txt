@@ -30,6 +30,7 @@
 /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/edit_cache.dir
 /Users/fra/Code/disc-tools/Surfaces/CMakeFiles/rebuild_cache.dir
 /Users/fra/Code/disc-tools/Surfaces/src/CMakeFiles/tests.dir
+/Users/fra/Code/disc-tools/Surfaces/src/CMakeFiles/surfaces.dir
 /Users/fra/Code/disc-tools/Surfaces/src/CMakeFiles/test.dir
 /Users/fra/Code/disc-tools/Surfaces/src/CMakeFiles/edit_cache.dir
 /Users/fra/Code/disc-tools/Surfaces/src/CMakeFiles/rebuild_cache.dir

@@ -107,6 +107,7 @@ clean: src/clean
 
 # Recursive "all" directory target.
 src/all: src/CMakeFiles/tests.dir/all
+src/all: src/CMakeFiles/surfaces.dir/all
 .PHONY : src/all
 
 # Recursive "preinstall" directory target.
@@ -115,6 +116,7 @@ src/preinstall:
 
 # Recursive "clean" directory target.
 src/clean: src/CMakeFiles/tests.dir/clean
+src/clean: src/CMakeFiles/surfaces.dir/clean
 .PHONY : src/clean
 
 #=============================================================================
@@ -852,7 +854,7 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 src/CMakeFiles/tests.dir/all:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/depend
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/fra/Code/disc-tools/Surfaces/CMakeFiles --progress-num=1,2 "Built target tests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/fra/Code/disc-tools/Surfaces/CMakeFiles --progress-num=3,4 "Built target tests"
 .PHONY : src/CMakeFiles/tests.dir/all
 
 # Build rule for subdir invocation for target.
@@ -870,6 +872,32 @@ tests: src/CMakeFiles/tests.dir/rule
 src/CMakeFiles/tests.dir/clean:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/clean
 .PHONY : src/CMakeFiles/tests.dir/clean
+
+#=============================================================================
+# Target rules for target src/CMakeFiles/surfaces.dir
+
+# All Build rule for target.
+src/CMakeFiles/surfaces.dir/all:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/depend
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/fra/Code/disc-tools/Surfaces/CMakeFiles --progress-num=1,2 "Built target surfaces"
+.PHONY : src/CMakeFiles/surfaces.dir/all
+
+# Build rule for subdir invocation for target.
+src/CMakeFiles/surfaces.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/fra/Code/disc-tools/Surfaces/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/surfaces.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/fra/Code/disc-tools/Surfaces/CMakeFiles 0
+.PHONY : src/CMakeFiles/surfaces.dir/rule
+
+# Convenience name for target.
+surfaces: src/CMakeFiles/surfaces.dir/rule
+.PHONY : surfaces
+
+# clean rule for target.
+src/CMakeFiles/surfaces.dir/clean:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/clean
+.PHONY : src/CMakeFiles/surfaces.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

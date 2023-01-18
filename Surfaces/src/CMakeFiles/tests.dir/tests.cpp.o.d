@@ -236,4 +236,5 @@ src/CMakeFiles/tests.dir/tests.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/math.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__split_buffer \
-  /Users/fra/Code/disc-tools/Surfaces/src/triangles.hpp
+  /Users/fra/Code/disc-tools/Surfaces/src/triangles.hpp \
+  /Users/fra/Code/disc-tools/Surfaces/src/utils.hpp

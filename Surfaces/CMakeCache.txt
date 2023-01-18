@@ -262,6 +262,9 @@ Project_SOURCE_DIR:STATIC=/Users/fra/Code/disc-tools/Surfaces
 //Name of the computer/site where compile is being run
 SITE:STRING=Francescos-MacBook-Pro.local
 
+//The directory containing a CMake configuration file for pybind11.
+pybind11_DIR:PATH=/opt/homebrew/share/cmake/pybind11
+
 //Value Computed by CMake
 surfaces_BINARY_DIR:STATIC=/Users/fra/Code/disc-tools/Surfaces
 
@@ -425,12 +428,37 @@ CTEST_SUBMIT_RETRY_COUNT-ADVANCED:INTERNAL=1
 CTEST_SUBMIT_RETRY_DELAY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: DART_TESTING_TIMEOUT
 DART_TESTING_TIMEOUT-ADVANCED:INTERNAL=1
+//Details about finding Python
+FIND_PACKAGE_MESSAGE_DETAILS_Python:INTERNAL=[/opt/homebrew/Frameworks/Python.framework/Versions/3.11/bin/python3.11][/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11][/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/libpython3.11.dylib][cfound components: Interpreter Development Development.Module Development.Embed ][v3.11.1(3.10)]
+//Test HAS_FLTO
+HAS_FLTO:INTERNAL=1
+//Test HAS_FLTO_THIN
+HAS_FLTO_THIN:INTERNAL=1
 //ADVANCED property for variable: MAKECOMMAND
 MAKECOMMAND-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MEMORYCHECK_COMMAND
 MEMORYCHECK_COMMAND-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: MEMORYCHECK_SUPPRESSIONS_FILE
 MEMORYCHECK_SUPPRESSIONS_FILE-ADVANCED:INTERNAL=1
+//Python executable during the last CMake run
+PYBIND11_PYTHON_EXECUTABLE_LAST:INTERNAL=/opt/homebrew/Frameworks/Python.framework/Versions/3.11/bin/python3.11
+//Python debug status
+PYTHON_IS_DEBUG:INTERNAL=0
+PYTHON_MODULE_EXTENSION:INTERNAL=.cpython-311-darwin.so
 //ADVANCED property for variable: SITE
 SITE-ADVANCED:INTERNAL=1
+_Python:INTERNAL=Python
+_Python_DEVELOPMENT_EMBED_SIGNATURE:INTERNAL=f556b72c1194ff0da0a7de0f082ffeb1
+_Python_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=cd25cb992a8b2d16f1a607ebb559de65
+//Path to a program.
+_Python_EXECUTABLE:INTERNAL=/opt/homebrew/Frameworks/Python.framework/Versions/3.11/bin/python3.11
+//Path to a file.
+_Python_INCLUDE_DIR:INTERNAL=/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11
+//Python Properties
+_Python_INTERPRETER_PROPERTIES:INTERNAL=Python;3;11;1;64;;cpython-311-darwin;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages
+_Python_INTERPRETER_SIGNATURE:INTERNAL=ced54e1deaa5003258fad7f903331192
+//Path to a library.
+_Python_LIBRARY_RELEASE:INTERNAL=/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/libpython3.11.dylib
+//Directories where pybind11 and possibly Python headers are located
+pybind11_INCLUDE_DIRS:INTERNAL=/opt/homebrew/include;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/include/python3.11
 

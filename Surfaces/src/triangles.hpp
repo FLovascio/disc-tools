@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "linalg.hpp"
+#include "utils.hpp"
 
 template<typename T>
 struct triangleVertices{
@@ -59,8 +60,8 @@ class triangle{
 template <typename T>
 struct triangles{
   std::vector<triangleVertices<T>> trianglesStored;
-  triangles(unsigned int reserveLength_=0){
-    trianglesStored.reserve(reserveLength_);
+  triangles(unsigned int reserveLength_=16){
+    trianglesStored.reserve(utils::next_pow2(reserveLength_));
   };
   auto get_len()->unsigned int{
     return trianglesStored.size();
