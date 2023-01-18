@@ -9,3 +9,9 @@
 #include "grid.hpp"
 
 namespace py = pybind11;
+
+PYBIND11_MODULE(tesselate, m){
+  py::class_<grid>(m,"grid")
+    .def(py::init<>)
+    .def("tesselate",&grid::tesselate)
+}
