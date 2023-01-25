@@ -503,19 +503,6 @@ tests/fast:
 	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/build
 .PHONY : tests/fast
 
-#=============================================================================
-# Target rules for targets named surfaces
-
-# Build rule for target.
-surfaces: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 surfaces
-.PHONY : surfaces
-
-# fast build rule for target.
-surfaces/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/build
-.PHONY : surfaces/fast
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -553,7 +540,6 @@ help:
 	@echo "... NightlySubmit"
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
-	@echo "... surfaces"
 	@echo "... tests"
 .PHONY : help
 

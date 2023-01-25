@@ -15,6 +15,13 @@ struct grid{
   unsigned int nx;
   unsigned int ny;
   unsigned int nz;
+  grid(std::vector<linalg3D::dataPoint<T>> dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):dataPoints(dataPoints_),nx(nx_),ny(ny_),nz(nz_){;}
+  grid(std::vector<linalg3D::vector<T>> position_, std::vector<T> data_, unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_){
+    dataPoints.reserve(data_.size());
+    for(int i=0;i<data_.size();++i){
+      dataPoints.push_back(linalg3D::dataPoint<T>{position_,data_});
+    }
+  }
   inline auto operator[](unsigned int i_)->linalg3D::dataPoint<T>&{
     return dataPoints[i_];
   }

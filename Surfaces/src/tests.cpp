@@ -1,7 +1,31 @@
 #include <iostream>
+#include <memory>
 #include "linalg.hpp"
 #include "triangles.hpp"
 #include "utils.hpp"
+#include "cubes.hpp"
+#include "marching_cubes.hpp"
+#include "grid.hpp"
+
+auto make_test_volume(unsigned int resolution)->std::unique_ptr<grid<double>>{
+  std::vector<linalg3D::dataPoint<double>> points;
+  double h=2.0/((double)resolution);
+  double px=-1.0;
+  double py=-1.0;
+  double pz=-1.0;
+  for(int k=0;k<resolution;++k){
+    for(int j=0;j<resolution;++j){
+      for(int i=0;i<resolution;++i){
+        double data=px*px+py*py+pz*pz;
+        points.push_back(linalg3D::dataPoint<double>{linalg3D::vector<double>{px,py,pz},data});
+        px+=h;
+      }
+      py+=h;
+    }
+    pz+=h;
+  }
+  return std::make_unique<grid<double>>(grid<double>{points,resolution,resolution,resolution});
+}
 
 auto main()->int{
   std::cout<<"tests!\n";
@@ -13,4 +37,6 @@ auto main()->int{
   vutils::print(linalg3D::direction(vec3));
   vutils::print(triangle<double>(triangleSides<double>{vec1,vec2}).normal());
   std::cout<<"testing utils::next_pow2()\npower of 2 after 13 is "<<utils::next_pow2(13)<<"\n";
+
+  auto volume=make_test_volume(10);
 }

@@ -239,8 +239,18 @@ src/CMakeFiles/tests.dir/tests.cpp.o: src/tests.cpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/__split_buffer \
   src/triangles.hpp \
-  src/utils.hpp
+  src/utils.hpp \
+  src/cubes.hpp \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/array \
+  src/marching_cubes.hpp \
+  src/grid.hpp
 
+
+src/grid.hpp:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/c++/v1/array:
+
+src/cubes.hpp:
 
 src/utils.hpp:
 
@@ -559,6 +569,8 @@ src/tests.cpp:
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/_types/_wctype_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/sys/_types/_wint_t.h:
+
+src/marching_cubes.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX12.1.sdk/usr/include/strings.h:
 
