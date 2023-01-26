@@ -38,6 +38,9 @@ class scalarCube<bool>{
   private:
     int vertices;
   public:
+  scalarCube(){
+    vertices=0;
+  }
   template<typename T>
   scalarCube(scalarCube<T>vertexData_, T isolevel){
     vertices=0;
@@ -69,7 +72,7 @@ struct dataCube{
                                  vertexData[7].data}};
   };
   inline auto position()const->vectorCube<T>{
-    return vectorCube<T>{std::array<T,8>{vertexData[0].position,
+    return vectorCube<T>{std::array<linalg3D::vector<T>,8>{vertexData[0].position,
                                  vertexData[1].position,
                                  vertexData[2].position,
                                  vertexData[3].position,

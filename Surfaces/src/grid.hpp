@@ -28,27 +28,27 @@ struct grid{
   inline auto operator()(unsigned int i_,unsigned int j_,unsigned int k_)->linalg3D::dataPoint<T>&{
     return dataPoints[i_+(nx*j_)+(nx*ny*k_)];
   }
-  inline auto cube(unsigned int i_,unsigned int j_,unsigned int k_)const->dataCube<T>{
-    return dataCube<T>{{{this(i_,j_,k_),this(i_+1,j_,k_),this(i_,j_+1,k_),this(i_+1,j_+1,k_),
-                         this(i_,j_,k_+1),this(i_+1,j_,k_+1),this(i_,j_+1,k_+1),this(i_+1,j_+1,k_+1)}}};
+  inline auto cube(unsigned int i_,unsigned int j_,unsigned int k_)->dataCube<T>{
+    return dataCube<T>{{{(*this)(i_,j_,k_),(*this)(i_+1,j_,k_),(*this)(i_,j_+1,k_),(*this)(i_+1,j_+1,k_),
+                         (*this)(i_,j_,k_+1),(*this)(i_+1,j_,k_+1),(*this)(i_,j_+1,k_+1),(*this)(i_+1,j_+1,k_+1)}}};
   }
   inline auto cube(unsigned int i_)const->dataCube<T>{
-    return dataCube<T>{{{this[i_],this[i_+1],this[i_+nx],this[i_+nx+1],
-                         this[i_+ny*nx],this[i_+1+nx*ny],this[i_+nx+nx*ny],this[i_+1+nx+nx*ny]}}};
+    return dataCube<T>{{{(*this)[i_],(*this)[i_+1],(*this)[i_+nx],(*this)[i_+nx+1],
+                         (*this)[i_+ny*nx],(*this)[i_+1+nx*ny],(*this)[i_+nx+nx*ny],(*this)[i_+1+nx+nx*ny]}}};
   }
-  auto construct_marching_cube(unsigned int i_,unsigned int j_,unsigned int k_,T isoLevel_)const->marchingCube<T>{
+  auto construct_marching_cube(unsigned int i_,unsigned int j_,unsigned int k_,T isoLevel_)->marchingCube<T>{
     return marchingCube<T>(cube(i_,j_,k_),isoLevel_);
   }
-  auto construct_marching_cube(unsigned int i_,T isoLevel_)const->marchingCube<T>{
+  auto construct_marching_cube(unsigned int i_,T isoLevel_)->marchingCube<T>{
     return marchingCube<T>(cube(i_),isoLevel_);
   }
-  auto find_triangles(unsigned int i_,unsigned int j_,unsigned int k_,T isoLevel_,triangles<T> &triangStore_)const->void{
+  auto find_triangles(unsigned int i_,unsigned int j_,unsigned int k_,T isoLevel_,triangles<T> &triangStore_)->void{
     construct_marching_cube(i_,j_,k_,isoLevel_).build_triangles(triangStore_);
   }
-  auto find_triangles(unsigned int i_,T isoLevel_,triangles<T> &triangStore_)const->void{
+  auto find_triangles(unsigned int i_,T isoLevel_,triangles<T> &triangStore_)->void{
     construct_marching_cube(i_,isoLevel_).build_triangles(triangStore_);
   }
-  auto tesselate(T isoLevel_, triangles<T> &triangStore_)const->void{
+  auto tesselate(T isoLevel_, triangles<T> &triangStore_)->void{
     for(unsigned int k=0;k<nz-1;++k){
       for(unsigned int j=0;j<ny-1;++j){
         for(unsigned int i=0;i<nx-1;++i){

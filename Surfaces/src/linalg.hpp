@@ -64,6 +64,10 @@ class vectorOutput{
   std::vector<linalg3D::vector<T>> vectors;
 };
 template <typename T>
+auto print(linalg3D::dataPoint<T>v_,std::ostream& out_=std::cout)->void{
+  out_<<v_.data<<" ("<<v_.position.e1<<","<<v_.position.e2<<","<<v_.position.e3<<")\n";
+}
+template <typename T>
 auto print(linalg3D::vector<T>v_,std::ostream& out_=std::cout)->void{
   out_<<"("<<v_.e1<<","<<v_.e2<<","<<v_.e3<<")\n";
 }

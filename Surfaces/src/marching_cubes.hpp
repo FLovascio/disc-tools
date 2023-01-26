@@ -310,16 +310,16 @@ template <typename T> class marchingCube {
 private:
   scalarCube<T> data;
   vectorCube<T> position;
-  std::array<double, 12> vertList;
+  std::array<linalg3D::vector<double>, 12> vertList;
   scalarCube<bool> cubeIndex;
   T isoLevel;
   bool atSurface;
 public: 
-  marchingCube(const vectorCube<double> &position_,const scalarCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
+  marchingCube(const vectorCube<T> &position_,const scalarCube<T> &data_, T isoLevel_):position(position_),data(data_),isoLevel(isoLevel_){
     cubeIndex=scalarCube<bool>(data,isoLevel);
     vertex_interpolate();
   };
-  marchingCube(const dataCube<double> &dataCube_, T isoLevel_):isoLevel(isoLevel_),data(dataCube_.data()),position(dataCube_.position()){
+  marchingCube(const dataCube<T> &dataCube_, T isoLevel_):isoLevel(isoLevel_),data(dataCube_.data()),position(dataCube_.position()){
     cubeIndex=scalarCube<bool>(data,isoLevel);
     vertex_interpolate();
   };
@@ -366,7 +366,7 @@ public:
       vertList[11] = VertexInterp(isoLevel, position[3], position[7], data[3],
                                   data[7]);
   }
-  auto build_triangles(std::vector<triangleVertices<T>>&triangles)->void{
+  auto build_triangles(triangles<T>&triangles)->void{
     for (int i=0;triTable[cubeIndex.get_value()][i]!=-1;i+=3) {
       triangles.push_back(triangleVertices<T>{vertList[triTable[cubeIndex.get_value()][i]],vertList[triTable[cubeIndex.get_value()][i+1]],vertList[triTable[cubeIndex.get_value()][i+2]]});
     }
