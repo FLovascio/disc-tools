@@ -1,2 +1,2 @@
 add_executable(tests tests.cpp linalg.hpp triangles.hpp utils.hpp marching_cubes.hpp cubes.hpp grid.hpp)
-#pybind11_add_module(surfaces MODULE tesselate.cpp linalg.hpp triangles.hpp marching_cubes.hpp cubes.hpp grid.hpp utils.hpp)
+pybind11_add_module(surfaces MODULE tesselate.cpp linalg.hpp triangles.hpp marching_cubes.hpp cubes.hpp grid.hpp utils.hpp)
