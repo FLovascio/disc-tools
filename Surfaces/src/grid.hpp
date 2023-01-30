@@ -8,6 +8,18 @@
 #include "triangles.hpp"
 #include "marching_cubes.hpp"
 
+// Will implement strips and sheets later for now here are placeholders
+template <typename T>
+struct strip{
+  std::vector<linalg3D::dataPoint<T>> dataPoints;
+  unsigned int nx;
+};
+template <typename T>
+struct sheet{
+  std::vector<linalg3D::dataPoint<T>> dataPoints;
+  unsigned int nx;
+  unsigned int ny;
+};
 
 template <typename T>
 struct grid{
@@ -15,11 +27,25 @@ struct grid{
   unsigned int nx;
   unsigned int ny;
   unsigned int nz;
+  grid(){
+    dataPoints.reserve(32768);
+    nx=32;
+    ny=32;
+    nz=32;
+  }
   grid(std::vector<linalg3D::dataPoint<T>> dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):dataPoints(dataPoints_),nx(nx_),ny(ny_),nz(nz_){;}
   grid(std::vector<linalg3D::vector<T>> position_, std::vector<T> data_, unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_){
     dataPoints.reserve(data_.size());
     for(int i=0;i<data_.size();++i){
-      dataPoints.push_back(linalg3D::dataPoint<T>{position_,data_});
+      dataPoints.push_back(linalg3D::dataPoint<T>{position_[i],data_[i]});
+    }
+  }
+  grid(linalg3D::dataPoint<T>* dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_),dataPoints(dataPoints_,dataPoints_+(nx*ny*nz)){;}
+  grid(linalg3D::vector<T>* position_,T* data_,unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_){
+    auto size=nx*ny*nz;
+    dataPoints.reserve(size);
+    for(int i=0;i<size;++i){
+      dataPoints.push_back(linalg3D::dataPoint<T>{position_[i],data_[i]});
     }
   }
   inline auto operator[](unsigned int i_)->linalg3D::dataPoint<T>&{
