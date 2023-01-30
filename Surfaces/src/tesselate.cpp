@@ -27,7 +27,6 @@ auto build_grid_from_separate_buffers(py::array_t<linalg3D::vector<double>> posi
 PYBIND11_MODULE(tesselate, m){
   py::class_<grid<double>>(m,"grid")
     .def(py::init<>())
-    .def("as_grid",)
     .def("tesselate",&grid<double>::tesselate)
     .def_buffer([](grid<double>&g)->py::buffer_info{
       return py::buffer_info(
@@ -50,5 +49,5 @@ PYBIND11_MODULE(tesselate, m){
             1,{},{}              
         );
     }); 
-    
+  
 }
