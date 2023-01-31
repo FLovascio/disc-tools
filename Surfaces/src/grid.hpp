@@ -33,6 +33,7 @@ struct grid{
     ny=32;
     nz=32;
   }
+  //c++ constructors
   grid(std::vector<linalg3D::dataPoint<T>> dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):dataPoints(dataPoints_),nx(nx_),ny(ny_),nz(nz_){;}
   grid(std::vector<linalg3D::vector<T>> position_, std::vector<T> data_, unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_){
     dataPoints.reserve(data_.size());
@@ -40,13 +41,20 @@ struct grid{
       dataPoints.push_back(linalg3D::dataPoint<T>{position_[i],data_[i]});
     }
   }
-  grid(linalg3D::dataPoint<T>* dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_),dataPoints(dataPoints_,dataPoints_+(nx*ny*nz)){;}
+  //c constructors
+  grid(linalg3D::dataPoint<T>* dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_),dataPoints(dataPoints_,dataPoints_+(nx_*ny_*nz_)){;}
   grid(linalg3D::vector<T>* position_,T* data_,unsigned int nx_, unsigned int ny_, unsigned int nz_):nx(nx_),ny(ny_),nz(nz_){
     auto size=nx*ny*nz;
     dataPoints.reserve(size);
     for(int i=0;i<size;++i){
       dataPoints.push_back(linalg3D::dataPoint<T>{position_[i],data_[i]});
     }
+  }
+  static auto grid_from_ptr(linalg3D::dataPoint<T>* dataPoints_,unsigned int nx_, unsigned int ny_, unsigned int nz_)->grid<T>{
+    return grid(dataPoints_,nx_,ny_,nz_);
+  }
+  static auto grid_from_position_value_ptr(linalg3D::vector<T>* position_,T* data_,unsigned int nx_, unsigned int ny_, unsigned int nz_)->grid<T>{
+    return grid(position_,data_,nx_,ny_,nz_);
   }
   inline auto operator[](unsigned int i_)->linalg3D::dataPoint<T>&{
     return dataPoints[i_];

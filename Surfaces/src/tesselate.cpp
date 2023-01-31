@@ -3,6 +3,8 @@
 #include <functional>
 #include <memory>
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 #include "cubes.hpp"
 #include "linalg.hpp"
 #include "triangles.hpp"
@@ -10,9 +12,7 @@
 #include "grid.hpp"
 
 namespace py = pybind11;
-PYBIND11_NUMPY_DTYPE(linalg3D::vector<double>, e1, e2, e3);
-PYBIND11_NUMPY_DTYPE(linalg3D::dataPoint<double>, position, data);
-
+/*
 auto build_grid_from_buffer(py::array_t<linalg3D::dataPoint<double>> data_)->grid<double>{
   linalg3D::dataPoint<double>* dataPoints=static_cast<linalg3D::dataPoint<double>*>(data_.ptr);
   return grid(dataPoints,data_.shape(0),data_.shape(1),data_.shape(3));
@@ -23,10 +23,13 @@ auto build_grid_from_separate_buffers(py::array_t<linalg3D::vector<double>> posi
   linalg3D::vector<double>* position=static_cast<linalg3D::vector<double>*>(position_.ptr);
   return grid(position,data,data_.shape(0),data_.shape(1),data_.shape(3));
 }
-
+*/
 PYBIND11_MODULE(tesselate, m){
+  PYBIND11_NUMPY_DTYPE(linalg3D::vector<double>, e1, e2, e3);
+  PYBIND11_NUMPY_DTYPE(linalg3D::dataPoint<double>, position, data);
+
   py::class_<grid<double>>(m,"grid")
-    .def(py::init<>())
+    .def(py::init(&grid<double>::grid_from_ptr))
     .def("tesselate",&grid<double>::tesselate)
     .def_buffer([](grid<double>&g)->py::buffer_info{
       return py::buffer_info(

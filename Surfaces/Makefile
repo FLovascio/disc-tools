@@ -504,17 +504,17 @@ tests/fast:
 .PHONY : tests/fast
 
 #=============================================================================
-# Target rules for targets named surfaces
+# Target rules for targets named tesselate
 
 # Build rule for target.
-surfaces: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 surfaces
-.PHONY : surfaces
+tesselate: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tesselate
+.PHONY : tesselate
 
 # fast build rule for target.
-surfaces/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/surfaces.dir/build.make src/CMakeFiles/surfaces.dir/build
-.PHONY : surfaces/fast
+tesselate/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tesselate.dir/build.make src/CMakeFiles/tesselate.dir/build
+.PHONY : tesselate/fast
 
 # Help Target
 help:
@@ -553,7 +553,7 @@ help:
 	@echo "... NightlySubmit"
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
-	@echo "... surfaces"
+	@echo "... tesselate"
 	@echo "... tests"
 .PHONY : help
 
