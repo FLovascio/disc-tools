@@ -31,7 +31,7 @@ PYBIND11_MODULE(tesselate, m){
   py::class_<grid<double>>(m,"grid")
     .def(py::init(&grid<double>::grid_from_ptr))
     .def("tesselate",&grid<double>::tesselate)
-    .def_buffer([](grid<double>&g)->py::buffer_info{
+    .def_buffer([](grid<double>&g)->py::buffer_info {
       return py::buffer_info(
             g.dataPoints.data(),                                            // Pointer to buffer 
             sizeof(linalg3D::dataPoint<double>),                            // Size of one datapoint 
@@ -44,7 +44,7 @@ PYBIND11_MODULE(tesselate, m){
     });
   py::class_<triangles<double>>(m,"triangles")
     .def(py::init<>())
-    .def_buffer([](triangles<double>&t)->py::buffer_info{
+    .def_buffer([](triangles<double>&t)->py::buffer_info {
       return py::buffer_info(
             t.trianglesStored.data(),                                    // Pointer to buffer 
             sizeof(triangleVertices<double>),                            // Size of one datapoint 
