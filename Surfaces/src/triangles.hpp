@@ -63,6 +63,9 @@ struct triangles{
   triangles(unsigned int reserveLength_=16){
     trianglesStored.reserve(utils::next_pow2(reserveLength_));
   };
+  inline auto size()->unsigned int{
+    return trianglesStored.size();
+  }
   auto get_len()->unsigned int{
     return trianglesStored.size();
   };
@@ -76,5 +79,11 @@ struct triangles{
     }
     return ret;
   };
+  inline auto operator[](unsigned int i_)->triangleVertices<T>&{
+    return trianglesStored[i_];
+  }
+  inline auto item_size()->decltype(sizeof(triangleVertices<T>)){
+    return sizeof(triangleVertices<T>);
+  }
 };
 

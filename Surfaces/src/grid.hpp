@@ -68,11 +68,17 @@ struct grid{
   static auto grid_from_Tptr_Tptr(T* position_,T* data_,unsigned int nx_, unsigned int ny_, unsigned int nz_)->grid<T>{
     return grid(position_,data_,nx_,ny_,nz_);
   }
+  inline auto size()->unsigned int{
+    return dataPoints.size();
+  }
   inline auto operator[](unsigned int i_)->linalg3D::dataPoint<T>&{
     return dataPoints[i_];
   }
   inline auto operator()(unsigned int i_,unsigned int j_,unsigned int k_)->linalg3D::dataPoint<T>&{
     return dataPoints[i_+(nx*j_)+(nx*ny*k_)];
+  }
+  inline auto item_size()->decltype(sizeof(linalg3D::dataPoint<T>)){
+    return sizeof(linalg3D::dataPoint<T>);
   }
   inline auto cube(unsigned int i_,unsigned int j_,unsigned int k_)->dataCube<T>{
     return dataCube<T>{{{(*this)(i_,j_,k_),(*this)(i_+1,j_,k_),(*this)(i_,j_+1,k_),(*this)(i_+1,j_+1,k_),
