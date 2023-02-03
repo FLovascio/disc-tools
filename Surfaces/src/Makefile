@@ -127,20 +127,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-src/CMakeFiles/tests.dir/rule:
-	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tests.dir/rule
-.PHONY : src/CMakeFiles/tests.dir/rule
-
-# Convenience name for target.
-tests: src/CMakeFiles/tests.dir/rule
-.PHONY : tests
-
-# fast build rule for target.
-tests/fast:
-	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/build
-.PHONY : tests/fast
-
-# Convenience name for target.
 src/CMakeFiles/tesselate.dir/rule:
 	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 src/CMakeFiles/tesselate.dir/rule
 .PHONY : src/CMakeFiles/tesselate.dir/rule
@@ -178,30 +164,6 @@ tesselate.cpp.s:
 	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tesselate.dir/build.make src/CMakeFiles/tesselate.dir/tesselate.cpp.s
 .PHONY : tesselate.cpp.s
 
-tests.o: tests.cpp.o
-.PHONY : tests.o
-
-# target to build an object file
-tests.cpp.o:
-	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/tests.cpp.o
-.PHONY : tests.cpp.o
-
-tests.i: tests.cpp.i
-.PHONY : tests.i
-
-# target to preprocess a source file
-tests.cpp.i:
-	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/tests.cpp.i
-.PHONY : tests.cpp.i
-
-tests.s: tests.cpp.s
-.PHONY : tests.s
-
-# target to generate assembly for a file
-tests.cpp.s:
-	cd /Users/fra/Code/disc-tools/Surfaces && $(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/tests.cpp.s
-.PHONY : tests.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -212,13 +174,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... tesselate"
-	@echo "... tests"
 	@echo "... tesselate.o"
 	@echo "... tesselate.i"
 	@echo "... tesselate.s"
-	@echo "... tests.o"
-	@echo "... tests.i"
-	@echo "... tests.s"
 .PHONY : help
 
 
