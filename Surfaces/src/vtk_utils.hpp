@@ -1,7 +1,9 @@
 #pragma once
 
+#include <cstdio>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 #include "grid.hpp"
@@ -9,6 +11,7 @@
 #include "type_utils.hpp"
 #include "linalg.hpp"
 #include "polygons.hpp"
+#include "io_helpers.hpp"
 
 namespace vtk{
   namespace POLYDATA{
@@ -22,36 +25,66 @@ namespace vtk{
     struct points{};
   }
   template<class contentType>
-  struct vtkContent{};
+  struct vtkContent{
+    inline static const std::string identifier="# vtk DataFile Version 3.0\n";
+    std::string header="\n";
+    std::string dataType="\n";
+    std::string data="\n";
+  };
   template<>
   struct vtkContent<POLYDATA::points>{
     inline static const std::string identifier="# vtk DataFile Version 3.0\n";
-    inline static const std::string header="Polygon vertex coordinates";
+    inline static const std::string header="Polygon vertex coordinates\n";
     inline static const std::string dataType="DATASET POLYDATA\nPOINTS n float\n";
-    std::vector<linalg3D::vector<float>> data;
+    std::string data;
+    vtkContent(triangles<double> triangles_){
+      data=to_string<double,float>(triangles_);
+    } 
   };
   template<>
   struct vtkContent<POLYDATA::vertices>{
+    // this struct works by sequentially adding poygons, which guarantees 
+    // double counting of vertices
     inline static const std::string identifier="# vtk DataFile Version 3.0\n";
-    inline static const std::string header="Polygon vertex list";
+    inline static const std::string header="Polygon vertex list\n";
     inline static const std::string dataType="DATASET POLYDATA\nVERTICES n float\n";
-    std::vector<polygon> data;
-  };
-}
-
-
-/*  template<template<class> class container,typename T>
-  struct vtkWrite{
-    inline static const std::string identifier="# vtk DataFile Version 3.0\n";
-    std::string header;
-    std::string dataType;
     std::string data;
-    std::string attributes; 
+    vtkContent(uint nShapes_, uint vertices_=3, bool __noAlias__=false){
+      if(__noAlias__){
+        std::cerr<<"VTK Error: noalias mode for vtk POLYDATA is not yet supported\n";
+        return;
+      }
+      std::stringstream dataStream;
+      int side=0;
+      for(int i=0;i<nShapes_;++i){
+        dataStream << vertices_<<",";
+        for(int j=0;j<nShapes_;++j){
+          dataStream <<side<<",";
+          side++;
+        }
+        dataStream << "\n";
+      }
+      data=dataStream.str();
+    }
   };
+  template<class contentType>
+  auto to_file(vtkContent<contentType> content, std::string filename)->bool{
+    std::ofstream outFile(filename);
+    outFile<<content.identifier;
+    outFile<<content.header;
+    outFile<<content.dataType;
+    outFile<<content.data;
+    return true;
+  }
   template<typename T>
-  struct vtkWrite<triangles,T>{
-
-    std::vtkContent
-    std::string attributes; 
-  };
-*/
+  bool writeVTK(triangles<T> triangles_,std::string name){
+    {
+      vtkContent<POLYDATA::points> pointData(triangles_);
+      to_file(pointData, name+"_points.vtk");
+    }
+    {
+      vtkContent<POLYDATA::points> vertexData(triangles_.size()); 
+      to_file(vertexData, name+"vertices.vtk");
+    }
+  }
+}

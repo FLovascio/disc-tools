@@ -1,8 +1,11 @@
 #pragma once
 
 #include <cmath>
+#include <string>
+#include <sstream>
 #include "linalg.hpp"
 #include "utils.hpp"
+
 
 template<typename T>
 struct triangleVertices{
@@ -84,6 +87,12 @@ struct triangles{
   }
   inline auto item_size()->decltype(sizeof(triangleVertices<T>)){
     return sizeof(triangleVertices<T>);
+  }
+  inline auto begin()->decltype(std::begin(trianglesStored)){
+    return std::begin(trianglesStored); 
+  }
+  inline auto end()->decltype(std::end(trianglesStored)){
+    return std::end(trianglesStored); 
   }
 };
 
