@@ -6,6 +6,7 @@
 #include "cubes.hpp"
 #include "marching_cubes.hpp"
 #include "grid.hpp"
+#include "vtk_utils.hpp"
 
 auto make_test_volume(unsigned int resolution)->std::unique_ptr<grid<double>>{
   std::vector<linalg3D::dataPoint<double>> points;
@@ -43,9 +44,9 @@ auto main()->int{
   unsigned int res=3;
   auto volume=make_test_volume(res);
   std::cout<<"done\n";
-  for(uint i=0;i<res*res*res;++i){
-    vutils::print((*volume)[i]);
-  }
+  //for(uint i=0;i<res*res*res;++i){
+    //vutils::print((*volume)[i]);
+  //}
   std::cout<<"reserving triangles\n";
   triangles<double> tris(1000);
   std::cout<<"done\n";
@@ -53,5 +54,6 @@ auto main()->int{
   volume->tesselate(0.8,tris);
   std::cout<<"done\n";
   std::cout<<"found "<< tris.get_len()<<" triangles\n";
-
+  //std::cout<<to_string<double,double>(tris[1],","," ");
+  vtk::writeVTK(tris, "tris");
 }

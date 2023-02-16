@@ -11,7 +11,7 @@ BuildDirectory: /Users/fra/Code/disc-tools/Surfaces
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: Francescos-MacBook-Pro.local
+Site: Francescos-MBP.lan
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
 BuildName: Darwin-c++

@@ -491,17 +491,17 @@ ContinuousSubmit/fast:
 .PHONY : ContinuousSubmit/fast
 
 #=============================================================================
-# Target rules for targets named tesselate
+# Target rules for targets named tests
 
 # Build rule for target.
-tesselate: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tesselate
-.PHONY : tesselate
+tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests
+.PHONY : tests
 
 # fast build rule for target.
-tesselate/fast:
-	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tesselate.dir/build.make src/CMakeFiles/tesselate.dir/build
-.PHONY : tesselate/fast
+tests/fast:
+	$(MAKE) $(MAKESILENT) -f src/CMakeFiles/tests.dir/build.make src/CMakeFiles/tests.dir/build
+.PHONY : tests/fast
 
 # Help Target
 help:
@@ -540,7 +540,7 @@ help:
 	@echo "... NightlySubmit"
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
-	@echo "... tesselate"
+	@echo "... tests"
 .PHONY : help
 
 

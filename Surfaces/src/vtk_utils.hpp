@@ -35,10 +35,13 @@ namespace vtk{
   struct vtkContent<POLYDATA::points>{
     inline static const std::string identifier="# vtk DataFile Version 3.0\n";
     inline static const std::string header="Polygon vertex coordinates\n";
-    inline static const std::string dataType="DATASET POLYDATA\nPOINTS n float\n";
+    std::string dataType;
     std::string data;
     vtkContent(triangles<double> triangles_){
       data=to_string<double,float>(triangles_);
+      std::stringstream dataTypeStream;
+      dataTypeStream <<"DATASET POLYDATA\nPOINTS "<<3*triangles_.size()<<" float\n"; 
+      dataType=dataTypeStream.str();
     } 
   };
   template<>
@@ -47,19 +50,22 @@ namespace vtk{
     // double counting of vertices
     inline static const std::string identifier="# vtk DataFile Version 3.0\n";
     inline static const std::string header="Polygon vertex list\n";
-    inline static const std::string dataType="DATASET POLYDATA\nVERTICES n float\n";
+    std::string dataType;
     std::string data;
     vtkContent(uint nShapes_, uint vertices_=3, bool __noAlias__=false){
       if(__noAlias__){
         std::cerr<<"VTK Error: noalias mode for vtk POLYDATA is not yet supported\n";
         return;
       }
+      std::stringstream dataTypeStream;
+      dataTypeStream <<"DATASET POLYDATA\nVERTICES "<<nShapes_<<" float\n"; 
+      dataType=dataTypeStream.str();
       std::stringstream dataStream;
       int side=0;
       for(int i=0;i<nShapes_;++i){
-        dataStream << vertices_<<",";
-        for(int j=0;j<nShapes_;++j){
-          dataStream <<side<<",";
+        dataStream << vertices_;
+        for(int j=0;j<vertices_;++j){
+          dataStream <<","<<side;
           side++;
         }
         dataStream << "\n";
@@ -83,8 +89,9 @@ namespace vtk{
       to_file(pointData, name+"_points.vtk");
     }
     {
-      vtkContent<POLYDATA::points> vertexData(triangles_.size()); 
-      to_file(vertexData, name+"vertices.vtk");
+      vtkContent<POLYDATA::vertices> vertexData(triangles_.size()); 
+      to_file(vertexData, name+"_vertices.vtk");
     }
+    return true;
   }
 }

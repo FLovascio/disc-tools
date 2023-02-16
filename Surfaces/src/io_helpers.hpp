@@ -16,8 +16,8 @@ template <typename T,typename numericType>
 auto to_string(triangleVertices<T> triangle_, std::string vectorSeparator_ = "",
                std::string pointSeparator_ = "\n") -> std::string {
   std::stringstream rss;
-  rss << to_string<numericType>(triangle_.A,vectorSeparator_) << pointSeparator_ << to_string<numericType>(triangle_.B,vectorSeparator_)
-      << pointSeparator_ << to_string<numericType>(triangle_.C,vectorSeparator_);
+  rss << to_string<T,numericType>(triangle_.A,vectorSeparator_) << pointSeparator_ << to_string<T,numericType>(triangle_.B,vectorSeparator_)
+      << pointSeparator_ << to_string<T,numericType>(triangle_.C,vectorSeparator_);
   return rss.str();
 }
 
@@ -27,7 +27,7 @@ auto to_string(triangles<T> triangles_, std::string vectorSeparator_ = "",
                std::string triangleSeparator_ = "\n") -> std::string {
   std::stringstream rss;
   for(const triangleVertices<T>& triangle : triangles_){
-    rss << to_string<numericType>(triangle,vectorSeparator_,pointSeparator_) << triangleSeparator_;
+    rss << to_string<T,numericType>(triangle,vectorSeparator_,pointSeparator_) << triangleSeparator_;
   }
   return rss.str();            
 }

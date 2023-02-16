@@ -326,10 +326,12 @@ public:
   };
   auto vertex_interpolate() -> void {
     atSurface = true;
-    if (edgeTable[cubeIndex.get_value()] == 0)
+    if (edgeTable[cubeIndex.get_value()] == 0){
       atSurface = false;
-    return; // don't bother doing stuff after: surface does not intersect the
-            // cube
+      return;
+      // don't bother doing stuff after: surface does not intersect the
+      // cube
+      } 
     // Find the vertices where the surface intersects the cube
     if (edgeTable[cubeIndex.get_value()] & 1)
       vertList[0] =
