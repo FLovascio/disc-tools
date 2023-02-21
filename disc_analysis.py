@@ -85,3 +85,16 @@ def orbital_time(x,sinkPos,sinkM):
       for k in range(nz):
         r=np.linalg.norm(x[i,j,k,:]-sinkPos)
         T[i,j,k]=2*np.pi*np.sqrt(r**3/mu)
+
+@njit
+def z_rotate(theta):
+  return np.matrix([[np.cos(theta),-np.sin(theta),0],[np.sin(theta),np.cos(theta),0],[0.,0.,1.]])
+@njit
+def y_rotate(theta):
+  return np.matrix([[np.cos(theta),0.,np.sin(theta)],[0.,0., 1.],[-np.sin(theta),0.,np.cos(theta)]])
+#@njit
+#def z_rotate(theta)
+@njit
+def find_rotors_to_z(vector):
+  theta=np.arcos(vector[1]/np.linalg.norm(vector[0:2]))
+  phi=np.arcsin(np.linalg.norm(vector[0:2])/np.linalg.norm(vector))

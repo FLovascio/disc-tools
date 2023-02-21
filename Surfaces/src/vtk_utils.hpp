@@ -46,7 +46,7 @@ namespace vtk{
   };
   template<>
   struct vtkContent<POLYDATA::vertices>{
-    // this struct works by sequentially adding poygons, which guarantees 
+    // this struct works by sequentially adding polygons, which guarantees 
     // double counting of vertices
     inline static const std::string identifier="# vtk DataFile Version 3.0\n";
     inline static const std::string header="Polygon vertex list\n";
