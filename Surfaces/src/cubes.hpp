@@ -81,4 +81,15 @@ struct dataCube{
                                  vertexData[6].position,
                                  vertexData[7].position}};
   };
+  auto interpolate_data_in_cube(linalg3D::vector<T> position_in_cube)->T{//does not check if data is in cube, beware!
+    linalg3D::vector<T> relative_distance=linalg3D::elementwise_divide(linalg3D::minus(position_in_cube,vertexData[0].position),linalg3D::minus(vertexData[7].position-vertexData[0].position));
+    T d00=vertexData[0].data*(1.0-relative_distance.e1)+relative_distance.e1*vertexData[1].data;
+    T d01=vertexData[2].data*(1.0-relative_distance.e1)+relative_distance.e1*vertexData[3].data;
+    T d10=vertexData[4].data*(1.0-relative_distance.e1)+relative_distance.e1*vertexData[5].data;
+    T d11=vertexData[6].data*(1.0-relative_distance.e1)+relative_distance.e1*vertexData[7].data;
+    T d0 =d00*(1.0-relative_distance.e2)+relative_distance.e2*d01;
+    T d1 =d10*(1.0-relative_distance.e2)+relative_distance.e2*d11;
+    return d0*(1.0-relative_distance.e3)+relative_distance.e3*d1;
+  }
 };
+

@@ -38,6 +38,14 @@ auto direction(vector<T> a)->vector<T>{
   T vNorm=norm(a);
   return vector<T>{a.e1/vNorm,a.e2/vNorm,a.e3/vNorm};
 }
+template <typename T>
+auto elementwise_divide(vector<T> a,vector<T> b)->vector<T>{
+  return vector<T>{a.e1/b.e1, a.e2/b.e2, a.e3/b.e3}; 
+}
+template <typename T>
+auto elementwise_int_divide(vector<T> a,vector<T> b)->vector<int>{
+  return vector<int>{static_cast<int>(a.e1/b.e1), static_cast<int>(a.e2/b.e2), static_cast<int>(a.e3/b.e3)}; 
+}
 
 template<typename T>
 struct dataPoint{

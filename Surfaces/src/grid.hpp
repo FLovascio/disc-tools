@@ -80,6 +80,9 @@ struct grid{
   inline auto item_size()->decltype(sizeof(linalg3D::dataPoint<T>)){
     return sizeof(linalg3D::dataPoint<T>);
   }
+  inline auto h()->linalg3D::vector<T>{
+    return linalg3D::minus(dataPoints[1+nx+nx*ny],dataPoints[0]);
+  }
   inline auto cube(unsigned int i_,unsigned int j_,unsigned int k_)->dataCube<T>{
     return dataCube<T>{{{(*this)(i_,j_,k_),(*this)(i_+1,j_,k_),(*this)(i_,j_+1,k_),(*this)(i_+1,j_+1,k_),
                          (*this)(i_,j_,k_+1),(*this)(i_+1,j_,k_+1),(*this)(i_,j_+1,k_+1),(*this)(i_+1,j_+1,k_+1)}}};
@@ -88,6 +91,13 @@ struct grid{
     return dataCube<T>{{{(*this)[i_],(*this)[i_+1],(*this)[i_+nx],(*this)[i_+nx+1],
                          (*this)[i_+ny*nx],(*this)[i_+1+nx*ny],(*this)[i_+nx+nx*ny],(*this)[i_+1+nx+nx*ny]}}};
   }
+  inline auto cube(linalg3D::vector<int> index_)->dataCube<T>{
+    int i_=index_.e1;
+    int j_=index_.e2;
+    int k_=index_.e3;
+    return dataCube<T>{{{(*this)(i_,j_,k_),(*this)(i_+1,j_,k_),(*this)(i_,j_+1,k_),(*this)(i_+1,j_+1,k_),
+                         (*this)(i_,j_,k_+1),(*this)(i_+1,j_,k_+1),(*this)(i_,j_+1,k_+1),(*this)(i_+1,j_+1,k_+1)}}};
+  } 
   auto construct_marching_cube(unsigned int i_,unsigned int j_,unsigned int k_,T isoLevel_)->marchingCube<T>{
     return marchingCube<T>(cube(i_,j_,k_),isoLevel_);
   }
@@ -109,9 +119,14 @@ struct grid{
       };
     };
   }
+  auto interpolated_data_at_position(linalg3D::vector<T> position_)->T{
+    auto index=linalg3D::elementwise_int_divide(position_, this->h());
+    return this->cube(index).interpolate_data_in_cube(position_);
+  }
 };
 
 template<typename T>
 auto get_all_triangles(const grid<T>& data_,T isoLevel_,triangles<T> & outputTriangles_)->void{
   data_.tesselate(isoLevel_,outputTriangles_);
 }
+
