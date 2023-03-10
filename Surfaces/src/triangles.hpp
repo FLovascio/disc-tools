@@ -42,6 +42,11 @@ auto normal(triangleVertices<T> vertices_)->linalg3D::vector<T>{
   return normal(sidesTemp);
 }
 
+template<typename T>
+auto centre(triangleVertices<T>)->linalg3D::vector<T>{
+  
+}
+
 template <typename T>
 class triangle{
   private:
@@ -96,3 +101,13 @@ struct triangles{
   }
 };
 
+template<typename T>
+struct triangle_centres{
+  std::vector<linalg3D::vector<T>> centres;
+  triangle_centres(triangles<T> triangles_){
+    centres.reserve(triangles_.size());
+    for(auto &triangle:triangles_){
+      centres.push_back(centre(triangle));
+    }
+  }
+};

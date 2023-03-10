@@ -92,9 +92,20 @@ def z_rotate(theta):
 @njit
 def y_rotate(theta):
   return np.matrix([[np.cos(theta),0.,np.sin(theta)],[0.,0., 1.],[-np.sin(theta),0.,np.cos(theta)]])
-#@njit
-#def z_rotate(theta)
+
 @njit
-def find_rotors_to_z(vector):
+def rotor_mapping_vector_to_z(vector):
   theta=np.arcos(vector[1]/np.linalg.norm(vector[0:2]))
   phi=np.arcsin(np.linalg.norm(vector[0:2])/np.linalg.norm(vector))
+  return z_rotate(phi)*y_rotate(theta)
+
+@njit(parallel=True)
+def make_vector_z_axis(vector,vector_field):
+  rotor=rotor_mapping_vector_to_z(vector)
+  nx,ny,nz,discard=vector_field.shape
+  v_field_new=np.zeros_like(vector_field)
+  for i in prange(nx):
+    for j in range(ny):
+      for k in range(nz):
+        v_field_new[i,j,k,:]=rotor*vector_field[i,j,k,:]
+  return v_field_new
