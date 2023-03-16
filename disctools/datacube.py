@@ -18,17 +18,16 @@ def make_cube(d:tuple[float,float,float],l:tuple[float,float,float],start:tuple[
         ret[i,j,k,2]=k*dz+startz+0.5*dz;
   return ret;
 
-@njit
-def osyris_make_cube(data:osyris.Dataset)->np.ndarray:
+def osyris_make_cube(data)->np.ndarray:
   startInd:tuple[np.int32,np.int32,np.int32]=(np.argmin(data["amr"]["position"].x.values),np.argmin(data["amr"]["position"].y.values),np.argmin(data["amr"]["position"].z.values));
-  levelMax:np.int8=np.max(data["amr"]["level"]);
-  startDeltaLevel:tuple[np.int8,np.int8,np.int8]=(data["amr"]["level"][startInd[0]]-levelMax,data["amr"]["level"][startInd[1]]-levelMax,data["amr"]["level"][startInd[2]]-levelMax);
+  levelMax:np.int8=np.max(data["amr"]["level"].values);
+  startDeltaLevel:tuple[np.int8,np.int8,np.int8]=(data["amr"]["level"][startInd[0]].values-levelMax,data["amr"]["level"][startInd[1]].values-levelMax,data["amr"]["level"][startInd[2]].values-levelMax);
   l:tuple[float,float,float]=(np.max(data["amr"]["position"].x.values)-np.min(data["amr"]["position"].x.values),np.max(data["amr"]["position"].y.values)-np.min(data["amr"]["position"].y.values),np.max(data["amr"]["position"].z.values)-np.min(data["amr"]["position"].z.values));
-  dx=np.min(data["amr"]["dx"]);
+  dx=np.min(data["amr"]["dx"].values);
   d:tuple[float,float,float]=(dx,dx,dx);
-  startx=data["amr"]["position"][startInd[0]]-(2**(startDeltaLevel[0])-1)*dx;
-  starty=data["amr"]["position"][startInd[1]]-(2**(startDeltaLevel[1])-1)*dx;
-  startz=data["amr"]["position"][startInd[2]]-(2**(startDeltaLevel[2])-1)*dx;
+  startx=data["amr"]["position"][startInd[0]].x.values-(2**(np.abs(startDeltaLevel[0]))-1)*dx;
+  starty=data["amr"]["position"][startInd[1]].y.values-(2**(np.abs(startDeltaLevel[1]))-1)*dx;
+  startz=data["amr"]["position"][startInd[2]].z.values-(2**(np.abs(startDeltaLevel[2]))-1)*dx;
   start:tuple[float,float,float]=(startx,starty,startz);
   return make_cube(d,l,start);
 
