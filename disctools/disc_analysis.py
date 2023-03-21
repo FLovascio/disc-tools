@@ -1,21 +1,21 @@
 import numpy as np
 from numba import njit, prange, stencil
 
-@stencil(parallel=True)
+@stencil
 def grad_P_x(P,x):
   hix=x[1,0,0]-x[0,0,0]
   hmx=x[0,0,0]-x[-1,0,0]
   hfx=hix/hmx
   dpx=P[1,0,0]-((hfx)**2)*P[-1,0,0]-(1.0-(hfx)**2)*P[0,0,0]
   return dpx
-@stencil(parallel=True)
+@stencil
 def grad_P_y(P,x):
   hiy=x[0,1,0]-x[0,0,0]
   hmy=x[0,0,0]-x[0,-1,0]
   hfy=hiy/hmy
   dpy=P[0,1,0]-((hfy)**2)*P[0,-1,0]-(1.0-(hfy)**2)*P[0,0,0]
   return dpy
-@stencil(parallel=True)
+@stencil
 def grad_P_z(P,x):
   hiz=x[0,0,1]-x[0,0,0]
   hmz=x[0,0,0]-x[0,0,-1]
@@ -86,20 +86,20 @@ def orbital_time(x,sinkPos,sinkM):
         r=np.linalg.norm(x[i,j,k,:]-sinkPos)
         T[i,j,k]=2*np.pi*np.sqrt(r**3/mu)
 
-@njit
+#@njit
 def z_rotate(theta):
   return np.matrix([[np.cos(theta),-np.sin(theta),0],[np.sin(theta),np.cos(theta),0],[0.,0.,1.]])
-@njit
+#@njit
 def y_rotate(theta):
   return np.matrix([[np.cos(theta),0.,np.sin(theta)],[0.,0., 1.],[-np.sin(theta),0.,np.cos(theta)]])
 
-@njit
+#@njit
 def rotor_mapping_vector_to_z(vector):
-  theta=np.arcos(vector[1]/np.linalg.norm(vector[0:2]))
+  theta=np.arccos(vector[1]/np.linalg.norm(vector[0:2]))
   phi=np.arcsin(np.linalg.norm(vector[0:2])/np.linalg.norm(vector))
   return z_rotate(phi)*y_rotate(theta)
 
-@njit(parallel=True)
+#@njit(parallel=True)
 def make_vector_z_axis(vector,vector_field):
   rotor=rotor_mapping_vector_to_z(vector)
   nx,ny,nz,discard=vector_field.shape

@@ -25,9 +25,9 @@ def osyris_make_cube(data)->np.ndarray:
   l:tuple[float,float,float]=(np.max(data["amr"]["position"].x.values)-np.min(data["amr"]["position"].x.values),np.max(data["amr"]["position"].y.values)-np.min(data["amr"]["position"].y.values),np.max(data["amr"]["position"].z.values)-np.min(data["amr"]["position"].z.values));
   dx=np.min(data["amr"]["dx"].values);
   d:tuple[float,float,float]=(dx,dx,dx);
-  startx=data["amr"]["position"][startInd[0]].x.values-(2**(np.abs(startDeltaLevel[0]))-1)*dx;
-  starty=data["amr"]["position"][startInd[1]].y.values-(2**(np.abs(startDeltaLevel[1]))-1)*dx;
-  startz=data["amr"]["position"][startInd[2]].z.values-(2**(np.abs(startDeltaLevel[2]))-1)*dx;
+  startx=data["amr"]["position"][startInd[0]].x.values-(2**(np.abs(startDeltaLevel[0])-1))*dx;
+  starty=data["amr"]["position"][startInd[1]].y.values-(2**(np.abs(startDeltaLevel[1])-1))*dx;
+  startz=data["amr"]["position"][startInd[2]].z.values-(2**(np.abs(startDeltaLevel[2])-1))*dx;
   start:tuple[float,float,float]=(startx,starty,startz);
   return make_cube(d,l,start);
 
@@ -61,13 +61,13 @@ def make_amr_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray,amrLev
   levelMax=np.max(amrLevels);
   levelMin=np.min(amrLevels);
   for L in range(levelMax-levelMin,0,-1):
-    iLevel=2**(L);
+    iLevel=2**(L-1);
     print("building amr level", levelMax-L);
     for i in prange(nPoint):
-      iData=np.int32(iLevel*np.around((positionArray[i,0]-x0)/(iLevel*dx)-0.5));
-      jData=np.int32(iLevel*np.around((positionArray[i,1]-y0)/(iLevel*dy)-0.5));
-      kData=np.int32(iLevel*np.around((positionArray[i,2]-z0)/(iLevel*dz)-0.5));
-      mapping[iData-iLevel//2:iData+iLevel//2,jData-iLevel//2:jData+iLevel//2,kData-iLevel//2:kData+iLevel//2]=i;
+      iData=np.int32(iLevel*np.floor((positionArray[i,0]-x0)/(iLevel*dx)));
+      jData=np.int32(iLevel*np.floor((positionArray[i,1]-y0)/(iLevel*dy)));
+      kData=np.int32(iLevel*np.floor((positionArray[i,2]-z0)/(iLevel*dz)));
+      mapping[iData-iLevel:iData+iLevel,jData-iLevel:jData+iLevel,kData-iLevel:kData+iLevel]=i;
   print("building amr level", levelMax);
   for i in prange(nPoint):
     iData=np.int32(np.floor((positionArray[i,0]-x0)/dx-0.5));
