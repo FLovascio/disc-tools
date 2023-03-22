@@ -93,7 +93,7 @@ def z_rotate(theta):
 def y_rotate(theta):
   return np.matrix([[np.cos(theta),0.,np.sin(theta)],[0.,0., 1.],[-np.sin(theta),0.,np.cos(theta)]])
 
-@njit
+#@njit
 def rotor_mapping_vector_to_z(vector):
   theta=np.arccos(vector[1]/np.linalg.norm(vector[0:2]))
   phi=np.arcsin(np.linalg.norm(vector[0:2])/np.linalg.norm(vector))

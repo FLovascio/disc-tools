@@ -1,10 +1,10 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling","numpy","numba"]
 build-backend = "hatchling.build"
 
 [project]
 name = "disctools"
-version = "0.0.1"
+version = "0.1.0"
 authors = [
   { name="Francesco Lovascio", email="francesco.lovascio@ens-lyon.fr" },
 ]
