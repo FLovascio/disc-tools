@@ -93,7 +93,7 @@ def z_rotate(theta):
 def y_rotate(theta):
   return np.matrix([[np.cos(theta),0.,np.sin(theta)],[0.,0., 1.],[-np.sin(theta),0.,np.cos(theta)]])
 
-#@njit
+@njit
 def rotor_mapping_vector_to_z(vector):
   theta=np.arccos(vector[1]/np.linalg.norm(vector[0:2]))
   phi=np.arcsin(np.linalg.norm(vector[0:2])/np.linalg.norm(vector))
@@ -107,5 +107,5 @@ def make_vector_z_axis(vector,vector_field):
   for i in prange(nx):
     for j in range(ny):
       for k in range(nz):
-        v_field_new[i,j,k,:]=rotor*vector_field[i,j,k,:]
+        v_field_new[i,j,k,:]=np.asarray(rotor*np.asarray(vector_field[i,j,k,:]).reshape(3,1)).reshape(1,3)
   return v_field_new
