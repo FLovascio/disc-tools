@@ -109,3 +109,42 @@ def make_vector_z_axis(vector,vector_field):
       for k in range(nz):
         v_field_new[i,j,k,:]=np.asarray(rotor*np.asarray(vector_field[i,j,k,:]).reshape(3,1)).reshape(1,3)
   return v_field_new
+
+
+class CGS:
+  def __init__(self):
+    G=6.67e-8
+
+cgs_constants=CGS()
+
+@njit
+def eccentricity_vector(star_mass,position,velocity):
+  k=star_mass*6.6743E-8
+  rhat=(position/np.linalg.norm(position))
+  e=(np.linalg.norm(velocity)*np.linalg.norm(velocity)*position-np.dot(velocity,position)*velocity)/k - rhat
+  return e
+#u^2R-u.Ru
+
+@njit
+def get_a(star_mass,position,velocity):
+  r,u=np.linalg.norm(position),np.linalg.norm(velocity)
+  return 1.0/((2.0/r) - u*u/(6.6743E-8*star_mass))
+
+@njit
+def complex_eccentricity(eccentricity_vector):
+  return np.complex(eccentricity_vector[0],eccentricity_vector[1])
+
+def mean_eccentricity(star_mass,positions,velocities,densities):
+  e=np.zeros_like(positions)
+  n,discard=positions.shape
+  for i in range(n):
+    e[i,:]=eccentricity_vector(star_mass,positions[i,:],velocities[i,:])
+  emean=np.mean(e,axis=0)
+  return emean
+
+@njit
+def bin_semimajor_axes(star_mass,positions,velocities,dens,bin_width=0.5,unit="au"):
+  a_array=np.zeros_like(dens)
+  for a,r,v in a_array,positions,velocities:
+    a=get_a(star_mass,r,v)
+  return a

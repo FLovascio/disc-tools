@@ -13,6 +13,11 @@ def make_cut_array(toCut:np.ndarray,conditionFunction:Callable[[np.ndarray],np.n
   cutArray[conditionFunction(conditionArg)]=toCut[conditionFunction(conditionArg)];
   return cutArray;
 
+def make_outside_zeros(toCut:np.ndarray,conditionFunction:Callable[[np.ndarray],np.ndarray],conditionArg:np.ndarray)->np.ndarray:
+  cutArray=np.zeros_like(toCut);
+  cutArray[conditionFunction(conditionArg)]=toCut[conditionFunction(conditionArg)];
+  return cutArray; 
+  
 @njit
 def in_domain(i:int,j:int,k:int)->bool:
   if i==0:
