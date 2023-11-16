@@ -2,20 +2,21 @@ import numpy as np
 from numba import njit,prange
 import osyris
 
-@njit(parallel=True)
+@njit(parallel=False)
 def make_cube(d:tuple[float,float,float],l:tuple[float,float,float],start:tuple[float,float,float])->np.ndarray:
   lx,ly,lz=l;
   dx,dy,dz=d;
   nx,ny,nz=(int(np.floor(lx/dx)),int(np.floor(ly/dy)),int(np.floor(lz/dz)));
   ret=np.zeros((nx,ny,nz,3));
   startx,starty,startz=start;
-
+  #print(1)
   for i in prange(nx):
     for j in prange(ny):
       for k in prange(nz):
         ret[i,j,k,0]=i*dx+startx+0.5*dx;
         ret[i,j,k,1]=j*dy+starty+0.5*dy;
         ret[i,j,k,2]=k*dz+startz+0.5*dz;
+  #print(2)
   return ret;
 
 def osyris_make_cube(data)->np.ndarray:
@@ -25,13 +26,15 @@ def osyris_make_cube(data)->np.ndarray:
   l:tuple[float,float,float]=(np.max(data["amr"]["position"].x.values)-np.min(data["amr"]["position"].x.values),np.max(data["amr"]["position"].y.values)-np.min(data["amr"]["position"].y.values),np.max(data["amr"]["position"].z.values)-np.min(data["amr"]["position"].z.values));
   dx=np.min(data["amr"]["dx"].values);
   d:tuple[float,float,float]=(dx,dx,dx);
-  startx=data["amr"]["position"][startInd[0]].x.values-(2**(np.abs(startDeltaLevel[0])-1))*dx;
-  starty=data["amr"]["position"][startInd[1]].y.values-(2**(np.abs(startDeltaLevel[1])-1))*dx;
-  startz=data["amr"]["position"][startInd[2]].z.values-(2**(np.abs(startDeltaLevel[2])-1))*dx;
+  startx=data["amr"]["position"][startInd[0]].x.values-(2.0**(np.abs(startDeltaLevel[0])-1))*dx;
+  starty=data["amr"]["position"][startInd[1]].y.values-(2.0**(np.abs(startDeltaLevel[1])-1))*dx;
+  startz=data["amr"]["position"][startInd[2]].z.values-(2.0**(np.abs(startDeltaLevel[2])-1))*dx;
   start:tuple[float,float,float]=(startx,starty,startz);
-  return make_cube(d,l,start);
+  ret=make_cube(d,l,start);
+  #print(3)
+  return ret
 
-@njit(parallel=True)
+@njit(parallel=False)
 def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->np.ndarray:
   dx=positionDataCube[1,0,0,0]-positionDataCube[0,0,0,0];
   dy=positionDataCube[0,1,0,1]-positionDataCube[0,0,0,1];
@@ -48,14 +51,16 @@ def make_simple_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray)->n
     mapping[iData,jData,kData]=i;
   return mapping;
 
-@njit(parallel=True)
-def make_amr_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray,amrLevels:np.ndarray)->np.ndarray:
+#@njit(parallel=False)
+def make_amr_mapping(positionArray,positionDataCube,amrLevels)->np.ndarray:
+  #print("Start mapping")
   dx=positionDataCube[1,0,0,0]-positionDataCube[0,0,0,0];
   dy=positionDataCube[0,1,0,1]-positionDataCube[0,0,0,1];
   dz=positionDataCube[0,0,1,2]-positionDataCube[0,0,0,2];
   (nx,ny,nz,discard)=positionDataCube.shape;
   (nPoint,discard)=positionArray.shape;
   mapping=np.empty((nx,ny,nz),dtype=np.int32);
+  #print("alocated")
   mapping.fill(-1);
   x0,y0,z0=positionDataCube[0,0,0,0],positionDataCube[0,0,0,1],positionDataCube[0,0,0,2]
   levelMax=np.max(amrLevels);
@@ -76,10 +81,12 @@ def make_amr_mapping(positionArray:np.ndarray,positionDataCube:np.ndarray,amrLev
     mapping[iData,jData,kData]=i;
   return mapping;
 
-@njit
+#@njit
 def make_mapping(positionArray:np.ndarray,amrLevels:np.ndarray,positionDataCube:np.ndarray,amrMapMethod:str="upres")->np.ndarray:
+  #print("A")
   mapping=make_simple_mapping(positionArray,positionDataCube);
   if amrMapMethod=="upres":
+    #print("B")
     mapping=make_amr_mapping(positionArray,positionDataCube,amrLevels);
   else:
     raise(UserWarning("if you have any level jumps, using no amrMapMethod will lead to broken mappings"));

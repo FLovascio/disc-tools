@@ -1,6 +1,15 @@
 import numpy as np
 from numba import njit, prange, stencil
 
+class bin:
+  def __init__(self, bounds):
+    self.upper,self.lower=bounds
+  
+  #@njit
+  def in_bin(self,value):
+    return bool(value>self.lower and value<=self.upper)
+
+
 @stencil
 def grad_P_x(P,x):
   hix=x[1,0,0]-x[0,0,0]
@@ -143,8 +152,58 @@ def mean_eccentricity(star_mass,positions,velocities,densities):
   return emean
 
 @njit
-def bin_semimajor_axes(star_mass,positions,velocities,dens,bin_width=0.5,unit="au"):
+def get_a_on_grid(star_mass,positions,velocities,dens):
+  nx,ny,nz,discard=velocities.shape
+  a=np.zeros_like(dens)
+  for i in prange(nx):
+    for j in range(ny):
+      for k in range(nz):
+        a[i,j,k]=get_a(star_mass,positions[i,j,k],velocities[i,j,k,:])
+  return a
+
+#@njit
+def in_bin(values,bin):
+  in_bin_val=np.zeros(values.shape,dtype=bool)
+  nx,ny,nz=values.shape
+  for i in prange(nx):
+    for j in range(ny):
+      for k in range(nz):
+        in_bin_val[i,j,k]=bin.in_bin(values[i,j,k])
+  return in_bin_val
+
+@njit
+def bin_semimajor_axes(star_mass,positions,velocities,dens,i_disc,bin_width=0.5,unit="au"):
   a_array=np.zeros_like(dens)
   for a,r,v in a_array,positions,velocities:
     a=get_a(star_mass,r,v)
+
   return a
+
+@njit
+def toomre_Q(cs,surfaceDensity,position,mass):
+    G=6.6743E-8
+    Omega=np.sqrt(G*mass/(np.linalg.norm(position)**3))
+    return cs*Omega/(np.pi*G*surfaceDensity)
+
+@njit
+def omega(position,mass):
+    G=6.6743E-8
+    return np.sqrt(G*mass/(np.linalg.norm(position)**3))
+
+@njit
+def toomre_Q_array(cs,surfaceDensity,position,mass):
+    Q=np.zeros_like(surfaceDensity)
+    nx,ny=cs.shape
+    for i in prange(nx):
+        for j in range(ny):
+            Q[i,j]=toomre_Q(cs[i,j],surfaceDensity[i,j],position[i,j],mass)
+    return Q
+
+@njit
+def omega_array(surfaceDensity,position,mass):
+    Q=np.zeros_like(surfaceDensity)
+    nx,ny=Q.shape
+    for i in prange(nx):
+        for j in range(ny):
+            Q[i,j]=omega(position[i,j],mass)
+    return Q
