@@ -203,6 +203,9 @@ def toomre_Q_array(cs,surfaceDensity,position,mass):
 def omega_array(surfaceDensity,position,mass):
     Q=np.zeros_like(surfaceDensity)
     nx,ny=Q.shape
+    #print(mass)
+    #print((np.linalg.norm(position[0,0])**3))
+    #print(omega(position[0,0],mass))
     for i in prange(nx):
         for j in range(ny):
             Q[i,j]=omega(position[i,j],mass)
